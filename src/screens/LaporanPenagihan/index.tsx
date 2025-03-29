@@ -25,7 +25,7 @@ function LaporanPenagihanScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const handleSearch = () => {
-    // Cari enum yang cocok dengan pencarian
+    fetchDataBillingReports(); // Memanggil kembali API saat tombol pencarian ditekan
   };
 
   useEffect(() => {
