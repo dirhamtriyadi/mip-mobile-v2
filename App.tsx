@@ -1,131 +1,231 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import dayjs from 'dayjs';
+import 'dayjs/locale/id';
+import React, { useContext } from 'react';
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import AbsenScreen from '@screens/Absen';
+import AbsenMasukScreen from '@screens/AbsenMasuk';
+import AbsenPulangScreen from '@screens/AbsenPulang';
+import LoginScreen from '@screens/Auth/Login.tsx';
+import CutiScreen from '@screens/Cuti';
+import DetailPenagihanScreen from '@screens/DetailPenagihan';
+import HomeScreen from '@screens/Home';
+import IzinScreen from '@screens/Izin';
+import PenagihanScreen from '@screens/Penagihan';
+import SakitScreen from '@screens/Sakit';
+import CalonNasabahScreen from '@src/screens/CalonNasabah';
+import DetailSurveiScreen from '@src/screens/DetailSurvei';
+import LaporanPenagihanScreen from '@src/screens/LaporanPenagihan';
+import ProfilScreen from '@src/screens/Profil';
+import SurveiScreen from '@src/screens/Survei';
+import { AuthContext, AuthProvider } from './src/contexts/AuthContext';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+export type RootStackParamList = {
+  Login: undefined;
+  Home: undefined;
+  Absen: undefined;
+  AbsenMasuk: undefined;
+  AbsenPulang: undefined;
+  Sakit: undefined;
+  Izin: undefined;
+  Cuti: undefined;
+  Penagihan: undefined;
+  DetailPenagihan: {id: string};
+  LaporanPenagihan: undefined;
+  CalonNasabah: undefined;
+  Survei: undefined;
+  DetailSurvei: {id: string};
+  Profil: undefined;
+};
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+const Stack = createNativeStackNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator();
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+function App() {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+    <AuthProvider>
+      <Layout />
+    </AuthProvider>
   );
 }
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+function HomeStackScreen() {
+  dayjs.locale('id');
+  return (
+    <Stack.Navigator>
+      <Stack.Group>
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={() => ({title: 'Home'})}
+        />
+        <Stack.Screen
+          name="Absen"
+          component={AbsenScreen}
+          options={{title: 'Absen'}}
+        />
+        <Stack.Screen
+          name="AbsenMasuk"
+          component={AbsenMasukScreen}
+          options={{title: 'Absen Masuk'}}
+        />
+        <Stack.Screen
+          name="AbsenPulang"
+          component={AbsenPulangScreen}
+          options={{title: 'Absen Pulang'}}
+        />
+        <Stack.Screen
+          name="Sakit"
+          component={SakitScreen}
+          options={{title: 'Sakit'}}
+        />
+        <Stack.Screen
+          name="Izin"
+          component={IzinScreen}
+          options={{title: 'Izin'}}
+        />
+        <Stack.Screen
+          name="Cuti"
+          component={CutiScreen}
+          options={{title: 'Cuti'}}
+        />
+        <Stack.Screen
+          name="Penagihan"
+          component={PenagihanScreen}
+          options={{title: 'Penagihan'}}
+        />
+        <Stack.Screen
+          name="DetailPenagihan"
+          component={DetailPenagihanScreen}
+          options={{title: 'Detail Penagihan'}}
+        />
+        <Stack.Screen
+          name="LaporanPenagihan"
+          component={LaporanPenagihanScreen}
+          options={{title: 'Laporan Penagihan'}}
+        />
+        <Stack.Screen
+          name="CalonNasabah"
+          component={CalonNasabahScreen}
+          options={{title: 'Calon Nasabah'}}
+        />
+        <Stack.Screen
+          name="Survei"
+          component={SurveiScreen}
+          options={{title: 'Survei'}}
+        />
+        <Stack.Screen
+          name="DetailSurvei"
+          component={DetailSurveiScreen}
+          options={{title: 'Detail Survei'}}
+        />
+      </Stack.Group>
+    </Stack.Navigator>
+  );
+}
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+function ProfilStackScreen() {
+  const {logout} = useContext(AuthContext);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error('Error removing token:', error);
+    }
   };
 
-  /*
-   * To keep the template simple and small we're adding padding to prevent view
-   * from rendering under the System UI.
-   * For bigger apps the reccomendation is to use `react-native-safe-area-context`:
-   * https://github.com/AppAndFlow/react-native-safe-area-context
-   *
-   * You can read more about it here:
-   * https://github.com/react-native-community/discussions-and-proposals/discussions/827
-   */
-  const safePadding = '5%';
-
   return (
-    <View style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Profil"
+        component={ProfilScreen}
+        options={{
+          title: 'Profil',
+          headerRight: () => (
+            <TouchableOpacity
+              style={{
+                marginRight: 10,
+                padding: 10,
+                backgroundColor: '#da4a4a',
+                borderRadius: 5,
+              }}
+              onPress={() => handleLogout()}>
+              <Text
+                style={{
+                  color: 'white',
+                  fontWeight: 'bold',
+                }}>
+                Logout
+              </Text>
+            </TouchableOpacity>
+          ),
+          // remove header back button
+          headerBackVisible: false,
+        }}
       />
-      <ScrollView
-        style={backgroundStyle}>
-        <View style={{paddingRight: safePadding}}>
-          <Header/>
-        </View>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            paddingHorizontal: safePadding,
-            paddingBottom: safePadding,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </View>
+    </Stack.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+function Layout() {
+  const {isAuthenticated, isLoading} = useContext(AuthContext);
+
+  if (isLoading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
+  return (
+    <NavigationContainer>
+      {isAuthenticated ? (
+        <Tab.Navigator>
+          <Tab.Screen
+            name="HomeStackScreen"
+            component={HomeStackScreen}
+            options={{
+              headerShown: false,
+              tabBarLabel: 'Home',
+              tabBarIcon: ({color}) => (
+                <Ionicons name="home-outline" size={24} color={color} />
+              ),
+              tabBarActiveTintColor: '#000',
+            }}
+          />
+          <Tab.Screen
+            name="ProfilStackScreen"
+            component={ProfilStackScreen}
+            options={{
+              headerShown: false,
+              tabBarLabel: 'Profil',
+              tabBarIcon: ({color}) => (
+                <Ionicons name="person-outline" size={24} color={color} />
+              ),
+              tabBarActiveTintColor: '#000',
+            }}
+          />
+        </Tab.Navigator>
+      ) : (
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{
+              title: 'Login',
+              headerShown: false,
+            }}
+          />
+        </Stack.Navigator>
+      )}
+    </NavigationContainer>
+  );
+}
 
 export default App;
