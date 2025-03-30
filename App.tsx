@@ -20,6 +20,7 @@ import SakitScreen from '@screens/Sakit';
 import CalonNasabahScreen from '@src/screens/CalonNasabah';
 import DetailSurveiScreen from '@src/screens/DetailSurvei';
 import LaporanPenagihanScreen from '@src/screens/LaporanPenagihan';
+import DetailLaporanPenagihanScreen from '@src/screens/DetailLaporanPenagihan';
 import ProfilScreen from '@src/screens/Profil';
 import SurveiScreen from '@src/screens/Survei';
 import { AuthContext, AuthProvider } from './src/contexts/AuthContext';
@@ -36,6 +37,7 @@ export type RootStackParamList = {
   Penagihan: undefined;
   DetailPenagihan: {id: string};
   LaporanPenagihan: undefined;
+  DetailLaporanPenagihan: {id: string};
   CalonNasabah: undefined;
   Survei: undefined;
   DetailSurvei: {id: string};
@@ -107,6 +109,11 @@ function HomeStackScreen() {
           name="LaporanPenagihan"
           component={LaporanPenagihanScreen}
           options={{title: 'Laporan Penagihan'}}
+        />
+        <Stack.Screen
+          name="DetailLaporanPenagihan"
+          component={DetailLaporanPenagihanScreen}
+          options={{title: 'Detail Laporan Penagihan'}}
         />
         <Stack.Screen
           name="CalonNasabah"

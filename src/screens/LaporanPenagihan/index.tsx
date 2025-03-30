@@ -83,7 +83,7 @@ function LaporanPenagihanScreen() {
                   {padding: 10, backgroundColor: '#f8f8f8', borderRadius: 10},
                 ]}
                 onPress={
-                  () => navigation.navigate('DetailPenagihan', {id: item.id})
+                  () => navigation.navigate('DetailLaporanPenagihan', {id: item.id})
                   // console.log({id: item.id})
                 }>
                 <View style={styles.head}>
