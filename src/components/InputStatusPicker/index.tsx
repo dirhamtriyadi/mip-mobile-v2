@@ -1,8 +1,7 @@
-import React from 'react';
-import { View, Text } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import React from 'react';
+import { Text, View } from 'react-native';
 import styles from './styles';
-import globalStyles from '@styles/styles';
 
 interface Option {
   label: string;
@@ -16,19 +15,27 @@ interface InputStatusPickerProps {
   label?: string;
 }
 
-function InputStatusPicker({ value, onChange, options, label = 'Pilih Status' }: InputStatusPickerProps) {
+function InputStatusPicker({
+  value,
+  onChange,
+  options,
+  label = 'Pilih Status',
+}: InputStatusPickerProps) {
   return (
-    <View style={globalStyles.groupField}>
+    <View style={styles.groupField}>
       {label && <Text style={styles.fieldLabel}>{label}</Text>}
       <View style={styles.pickerContainer}>
         <Picker
           style={styles.picker}
           selectedValue={value}
-          onValueChange={(itemValue) => onChange(itemValue)}
-        >
+          onValueChange={itemValue => onChange(itemValue)}>
           <Picker.Item label="-- Pilih --" value="" />
-          {options.map((option) => (
-            <Picker.Item key={option.value} label={option.label} value={option.value} />
+          {options.map(option => (
+            <Picker.Item
+              key={option.value}
+              label={option.label}
+              value={option.value}
+            />
           ))}
         </Picker>
       </View>

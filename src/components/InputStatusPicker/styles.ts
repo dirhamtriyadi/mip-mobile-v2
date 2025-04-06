@@ -1,6 +1,10 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  groupField: {
+    width: '100%',
+    marginVertical: 5,
+  },
   fieldLabel: {
     fontSize: 16,
     fontWeight: 'bold',
