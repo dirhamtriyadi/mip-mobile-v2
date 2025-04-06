@@ -4,7 +4,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
 import React, { useContext } from 'react';
-import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import AbsenScreen from '@screens/Absen';
@@ -18,9 +24,9 @@ import IzinScreen from '@screens/Izin';
 import PenagihanScreen from '@screens/Penagihan';
 import SakitScreen from '@screens/Sakit';
 import CalonNasabahScreen from '@src/screens/CalonNasabah';
+import DetailLaporanPenagihanScreen from '@src/screens/DetailLaporanPenagihan';
 import DetailSurveiScreen from '@src/screens/DetailSurvei';
 import LaporanPenagihanScreen from '@src/screens/LaporanPenagihan';
-import DetailLaporanPenagihanScreen from '@src/screens/DetailLaporanPenagihan';
 import ProfilScreen from '@src/screens/Profil';
 import SurveiScreen from '@src/screens/Survei';
 import { AuthContext, AuthProvider } from './src/contexts/AuthContext';
@@ -50,6 +56,10 @@ const Tab = createBottomTabNavigator();
 function App() {
   return (
     <AuthProvider>
+      <StatusBar
+        barStyle="dark-content" // Atur teks status bar menjadi gelap
+        backgroundColor="#ffffff" // Atur latar belakang status bar
+      />
       <Layout />
     </AuthProvider>
   );
