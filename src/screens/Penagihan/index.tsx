@@ -80,25 +80,35 @@ function PenagihanScreen() {
             flexDirection: 'row',
             gap: 10,
           }}>
-          <View style={{flex: 3}}>
-            <InputField
-              placeholder="Pilih Tanggal Awal"
-              value={startDate}
-              editable={false}
-              onIconPress={() => setOpenStartDatePicker(true)}
-              onChangeText={() => {}}
-              iconName="calendar"
-            />
-          </View>
-          <View style={{flex: 3}}>
-            <InputField
-              placeholder="Pilih Tanggal Akhir"
-              value={endDate}
-              editable={false}
-              onIconPress={() => setOpenEndDatePicker(true)}
-              onChangeText={() => {}}
-              iconName="calendar"
-            />
+          <View
+            style={{
+              flex: 6,
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+            }}>
+            <View style={{flex: 3}}>
+              <InputField
+                placeholder="Pilih Tanggal Awal"
+                value={startDate}
+                editable={false}
+                onIconPress={() => setOpenStartDatePicker(true)}
+                onChangeText={() => {}}
+                iconName="calendar"
+              />
+            </View>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Text>s/d</Text>
+            </View>
+            <View style={{flex: 3}}>
+              <InputField
+                placeholder="Pilih Tanggal Akhir"
+                value={endDate}
+                editable={false}
+                onIconPress={() => setOpenEndDatePicker(true)}
+                onChangeText={() => {}}
+                iconName="calendar"
+              />
+            </View>
           </View>
           <View style={{flex: 2}}>
             {/* <View style={{flex: 2, alignSelf: 'center'}}> */}
