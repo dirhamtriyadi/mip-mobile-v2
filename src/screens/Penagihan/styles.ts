@@ -1,20 +1,18 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    display: 'contents',
     width: '100%',
     height: '100%',
   },
   headContainer: {
-    width: '90%',
-    marginHorizontal: '5%',
-    marginTop: 5,
+    width: '100%',
+    padding: 10,
   },
   listContainer: {
-    width: '90%',
-    marginHorizontal: '5%',
-    marginTop: 5,
+    width: '100%',
+    paddingHorizontal: 10,
   },
   groupField: {
     width: '100%',
