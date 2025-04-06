@@ -1,18 +1,19 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   groupField: {
     width: '100%',
+    marginVertical: 10,
   },
   fieldLabel: {
     fontSize: 16,
-    marginBottom: 10,
+    // marginBottom: 10,
     fontWeight: 'bold',
   },
   btnContainer: {
     width: '100%',
     flexDirection: 'row',
-    marginBottom: 10,
+    // marginBottom: 10,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
-    marginBottom: 15,
+    marginBottom: 5,
     paddingHorizontal: 10,
     justifyContent: 'center',
     alignItems: 'center',
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
   imgContainer: {
     width: '100%',
     height: 200,
-    marginBottom: 10,
+    // marginBottom: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
