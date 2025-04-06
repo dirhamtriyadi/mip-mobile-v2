@@ -1,9 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { TouchableOpacity, Text, Image, View } from 'react-native';
-import SignatureScreen, { SignatureViewRef } from "react-native-signature-canvas";
+import React, { useEffect, useRef, useState } from 'react';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
+import SignatureScreen, { SignatureViewRef } from 'react-native-signature-canvas';
 import styles from './styles';
 import webStyles from './webStyles';
-import globalStyles from '@styles/styles';
 
 interface InputSignatureProps {
   label: string;
@@ -12,7 +11,12 @@ interface InputSignatureProps {
   onScrollEnabledChange?: (scrollEnabled: boolean) => void;
 }
 
-function InputSignature({ label, signature, onConfirm, onScrollEnabledChange }: InputSignatureProps) {
+function InputSignature({
+  label,
+  signature,
+  onConfirm,
+  onScrollEnabledChange,
+}: InputSignatureProps) {
   const ref = useRef<SignatureViewRef>(null);
   const [isLocked, setIsLocked] = useState(true);
   const [scrollEnabled, setScrollEnabled] = useState(true);
@@ -28,7 +32,7 @@ function InputSignature({ label, signature, onConfirm, onScrollEnabledChange }: 
     const now = Date.now();
     const lastTap = lastTapRef.current;
 
-    if (lastTap && (now - lastTap) < 300) {
+    if (lastTap && now - lastTap < 300) {
       setIsLocked(false); // Unlock jika double tap terdeteksi
     } else {
       lastTapRef.current = now; // Simpan waktu tap saat ini
@@ -41,21 +45,24 @@ function InputSignature({ label, signature, onConfirm, onScrollEnabledChange }: 
   };
 
   return (
-    <View style={globalStyles.groupField}>
+    <View style={styles.groupField}>
       <Text style={styles.fieldLabel}>{label}</Text>
       {signature ? (
         <Image
-          resizeMode={"contain"}
-          style={[{ width: 335, height: 114 }, styles.fieldInput, webStyles.container]}
-          source={{ uri: signature }}
+          resizeMode={'contain'}
+          style={[
+            {width: 335, height: 114},
+            styles.fieldInput,
+            webStyles.container,
+          ]}
+          source={{uri: signature}}
         />
       ) : null}
       {isLocked ? (
         <TouchableOpacity
           style={[styles.fieldInput, webStyles.container]}
           onPress={handleDoubleTap}
-          activeOpacity={1}
-        >
+          activeOpacity={1}>
           <Text style={styles.lockedText}>Double tap to unlock</Text>
         </TouchableOpacity>
       ) : (
@@ -65,11 +72,11 @@ function InputSignature({ label, signature, onConfirm, onScrollEnabledChange }: 
             onBegin={() => setScrollEnabled(false)}
             onEnd={() => setScrollEnabled(true)}
             onOK={handleSignatureConfirm}
-            onEmpty={() => console.log("Empty")}
-            onClear={() => console.log("clear")}
+            onEmpty={() => console.log('Empty')}
+            onClear={() => console.log('clear')}
             autoClear={true}
             descriptionText={label}
-            imageType='image/png'
+            imageType="image/png"
           />
         </View>
       )}
