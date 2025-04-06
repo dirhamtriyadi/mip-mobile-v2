@@ -1,5 +1,7 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import Button from '@src/components/Button';
 import Divider from '@src/components/Divider';
+import InputField from '@src/components/InputField';
 import RefreshableScrollView from '@src/components/RefreshableScrollView';
 import instance from '@src/configs/axios';
 import globalStyles from '@src/styles/styles';
@@ -14,14 +16,21 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
+import DatePicker from 'react-native-date-picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import styles from './styles';
 
 function DetailSurveiScreen() {
   const [data, setData] = useState<SurveiFormData[]>([]);
   const [search, setSearch] = useState<string>('');
+  const [startDate, setStartDate] = useState<string>(
+    dayjs().startOf('month').format('YYYY-MM-DD'),
+  );
+  const [endDate, setEndDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
+  const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
+  const [openEndDatePicker, setOpenEndDatePicker] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
@@ -35,7 +44,11 @@ function DetailSurveiScreen() {
     try {
       setLoading(true);
       const response = await instance.get('v1/prospective-customer-surveys', {
-        params: search ? {search} : {},
+        params: {
+          search: search || undefined,
+          start_date: startDate,
+          end_date: endDate,
+        },
       });
       setData(response.data.data);
       console.log(response.data.data);
@@ -63,9 +76,41 @@ function DetailSurveiScreen() {
   return (
     <SafeAreaView style={globalStyles.container}>
       <View style={styles.headContainer}>
-        <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10}}>
-          List Survei
-        </Text>
+        <Text style={{fontSize: 16, fontWeight: 'bold'}}>Filter Tanggal</Text>
+        <View
+          style={{
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            gap: 10,
+          }}>
+          <View style={{flex: 3}}>
+            <InputField
+              placeholder="Pilih Tanggal Awal"
+              value={startDate}
+              editable={false}
+              onIconPress={() => setOpenStartDatePicker(true)}
+              onChangeText={() => {}}
+              iconName="calendar"
+            />
+          </View>
+          <View style={{flex: 3}}>
+            <InputField
+              placeholder="Pilih Tanggal Akhir"
+              value={endDate}
+              editable={false}
+              onIconPress={() => setOpenEndDatePicker(true)}
+              onChangeText={() => {}}
+              iconName="calendar"
+            />
+          </View>
+          <View style={{flex: 2}}>
+            {/* <View style={{flex: 2, alignSelf: 'center'}}> */}
+            <Button
+              label="Filter"
+              onPress={() => fetchProspectiveCustomerSurveys()}
+            />
+          </View>
+        </View>
         <View style={styles.groupSearch}>
           <TextInput
             placeholder="Masukan kata pencarian"
@@ -132,6 +177,32 @@ function DetailSurveiScreen() {
           )}
         </View>
       </RefreshableScrollView>
+      <DatePicker
+        modal
+        mode="date"
+        // minimumDate={dayjs(endDate).toDate()}
+        maximumDate={dayjs(endDate).toDate()}
+        open={openStartDatePicker}
+        date={dayjs(startDate).toDate()}
+        onConfirm={date => {
+          setStartDate(dayjs(date).format('YYYY-MM-DD'));
+          setOpenStartDatePicker(false);
+        }}
+        onCancel={() => setOpenStartDatePicker(false)}
+      />
+      <DatePicker
+        modal
+        mode="date"
+        minimumDate={dayjs(startDate).toDate()}
+        // maximumDate={dayjs(endDate).toDate()}
+        open={openEndDatePicker}
+        date={dayjs(endDate).toDate()}
+        onConfirm={date => {
+          setEndDate(dayjs(date).format('YYYY-MM-DD'));
+          setOpenEndDatePicker(false);
+        }}
+        onCancel={() => setOpenEndDatePicker(false)}
+      />
     </SafeAreaView>
   );
 }
