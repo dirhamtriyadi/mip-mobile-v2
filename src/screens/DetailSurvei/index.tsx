@@ -443,24 +443,6 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
     downloadFile(fileUrl, fileName);
   }, [id, formDataSurvei]);
 
-  const requestManageStoragePermission = async () => {
-    if (Number(Platform.Version) >= 30) {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-      );
-
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('Izin penyimpanan penuh diberikan.');
-      } else {
-        console.log('Izin penyimpanan penuh ditolak.');
-      }
-    }
-  };
-
-  useEffect(() => {
-    requestManageStoragePermission();
-  }, []);
-
   return (
     <SafeAreaView style={globalStyles.container}>
       <ScrollView scrollEnabled={scrollEnabled}>
