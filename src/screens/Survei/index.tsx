@@ -1,28 +1,29 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import Divider from '@src/components/Divider';
+import RefreshableScrollView from '@src/components/RefreshableScrollView';
+import instance from '@src/configs/axios';
 import globalStyles from '@src/styles/styles';
+import { SurveiFormData } from '@src/types/survei';
+import { RootStackParamList } from 'App';
+import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
   SafeAreaView,
-  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
-import styles from './styles';
-import {useEffect, useState} from 'react';
-import {SurveiFormData} from '@src/types/survei';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from 'App';
-import instance from '@src/configs/axios';
-import dayjs from 'dayjs';
-import Divider from '@src/components/Divider';
+import styles from './styles';
 
 function DetailSurveiScreen() {
   const [data, setData] = useState<SurveiFormData[]>([]);
   const [search, setSearch] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
@@ -52,6 +53,13 @@ function DetailSurveiScreen() {
     fetchProspectiveCustomerSurveys();
   };
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchProspectiveCustomerSurveys();
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setRefreshing(false);
+  };
+
   return (
     <SafeAreaView style={globalStyles.container}>
       <View style={styles.headContainer}>
@@ -74,7 +82,7 @@ function DetailSurveiScreen() {
           </TouchableOpacity>
         </View>
       </View>
-      <ScrollView>
+      <RefreshableScrollView refreshing={refreshing} onRefresh={onRefresh}>
         <View style={styles.listContainer}>
           {loading ? (
             <ActivityIndicator size="large" color="#007bff" />
@@ -96,7 +104,7 @@ function DetailSurveiScreen() {
                   </Text>
                   <Text>{dayjs(item.created_at).format('DD-MM-YYYY')}</Text>
                 </View>
-                <Divider orientation='horizontal' color='black' width={1} />
+                <Divider orientation="horizontal" color="black" width={1} />
                 <Text>
                   <Text style={{fontWeight: 'bold'}}>No. KTP:</Text>{' '}
                   {item.number_ktp}
@@ -123,7 +131,7 @@ function DetailSurveiScreen() {
             </View>
           )}
         </View>
-      </ScrollView>
+      </RefreshableScrollView>
     </SafeAreaView>
   );
 }

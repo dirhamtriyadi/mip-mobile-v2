@@ -1,26 +1,27 @@
-import React, {useState, useEffect} from 'react';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import RefreshableScrollView from '@src/components/RefreshableScrollView';
+import { PenagihanData } from '@src/types/penagihan';
+import dayjs from 'dayjs';
+import React, { useEffect, useState } from 'react';
 import {
-  ScrollView,
+  ActivityIndicator,
+  Alert,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
-  Alert,
-  TextInput,
-  ActivityIndicator,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import instance from '../../configs/axios';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../../App';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { RootStackParamList } from '../../../App';
+import instance from '../../configs/axios';
 import styles from './styles';
-import dayjs from 'dayjs';
-import {PenagihanData} from '@src/types/penagihan';
 
 function PenagihanScreen() {
   const [data, setData] = useState<PenagihanData[]>([]);
   const [search, setSearch] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
@@ -49,6 +50,13 @@ function PenagihanScreen() {
     fetchBillings(); // Memanggil kembali API saat tombol pencarian ditekan
   };
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchBillings();
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setRefreshing(false);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headContainer}>
@@ -71,7 +79,7 @@ function PenagihanScreen() {
           </TouchableOpacity>
         </View>
       </View>
-      <ScrollView>
+      <RefreshableScrollView refreshing={refreshing} onRefresh={onRefresh}>
         <View style={styles.listContainer}>
           {loading ? (
             <ActivityIndicator size="large" color="#007bff" />
@@ -137,7 +145,7 @@ function PenagihanScreen() {
             </View>
           )}
         </View>
-      </ScrollView>
+      </RefreshableScrollView>
     </SafeAreaView>
   );
 }
