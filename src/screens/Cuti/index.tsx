@@ -1,19 +1,20 @@
-import React, {useState, useEffect} from 'react';
-import {ScrollView, Text, View, Alert, ActivityIndicator} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import DatePicker from 'react-native-date-picker';
-import instance from '../../configs/axios';
-import {useUserData} from '@hooks/useUserData';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../../App';
-import dayjs from 'dayjs';
-import {useNotification} from '@hooks/useNotification';
-import useDatePicker from '@hooks/useDatePicker';
 import InputField from '@components/InputField';
-import globalStyles from '@styles/styles';
-import styles from './styles';
+import useDatePicker from '@hooks/useDatePicker';
+import { useNotification } from '@hooks/useNotification';
+import { useUserData } from '@hooks/useUserData';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import Button from '@src/components/Button';
-import {CutiData} from '@src/types/cuti';
+import RefreshableScrollView from '@src/components/RefreshableScrollView';
+import { CutiData } from '@src/types/cuti';
+import globalStyles from '@styles/styles';
+import dayjs from 'dayjs';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, Text, View } from 'react-native';
+import DatePicker from 'react-native-date-picker';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { RootStackParamList } from '../../../App';
+import instance from '../../configs/axios';
+import styles from './styles';
 
 function CutiScreen() {
   const {userDetailData} = useUserData();
@@ -40,6 +41,7 @@ function CutiScreen() {
     end_date: dayjs(),
   });
 
+  const [refreshing, setRefreshing] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const [cutiData, setCutiData] = useState<CutiData | null>(null);
 
@@ -106,9 +108,16 @@ function CutiScreen() {
     }
   };
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchCutiData();
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setRefreshing(false);
+  };
+
   return (
     <SafeAreaView style={globalStyles.container}>
-      <ScrollView>
+      <RefreshableScrollView refreshing={refreshing} onRefresh={onRefresh}>
         <View style={globalStyles.formContainer}>
           <InputField
             label="NIK"
@@ -177,7 +186,7 @@ function CutiScreen() {
             </View>
           )}
         </View>
-      </ScrollView>
+      </RefreshableScrollView>
 
       <DatePicker
         modal
