@@ -3,10 +3,11 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     groupField: {
         width: '100%',
+        marginVertical: 5,
     },
     fieldLabel: {
         fontSize: 16,
-        marginBottom: 10,
+        // marginBottom: 10,
         fontWeight: 'bold',
     },
     fieldInput: {
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
     map: {
         width: '100%',
         height: 200,
-        marginBottom: 10,
+        // marginBottom: 10,
         marginTop: -10
     }
 });

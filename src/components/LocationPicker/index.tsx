@@ -1,6 +1,6 @@
-import React, {useRef, useEffect} from 'react';
-import {View, Text, TextInput, TouchableOpacity} from 'react-native';
-import MapView, {Marker} from 'react-native-maps';
+import React, { useEffect, useRef } from 'react';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import styles from './styles';
 
