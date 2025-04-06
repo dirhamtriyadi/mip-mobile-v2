@@ -1,12 +1,13 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const style = StyleSheet.create({
   groupField: {
     width: '100%',
+    marginVertical: 5,
   },
   fieldLabel: {
     fontSize: 16,
-    marginBottom: 10,
+    // marginBottom: 10,
     fontWeight: 'bold',
   },
   fieldInput: {
@@ -15,7 +16,7 @@ const style = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
-    marginBottom: 15,
+    // marginBottom: 15,
     paddingHorizontal: 10,
     justifyContent: 'center',
     backgroundColor: '#fff',

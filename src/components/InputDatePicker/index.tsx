@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {View, TouchableOpacity, Text, TextInput} from 'react-native';
-import DatePicker from 'react-native-date-picker';
 import dayjs from 'dayjs';
+import React, { useState } from 'react';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import DatePicker from 'react-native-date-picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import styles from './styles';
 
@@ -12,13 +12,18 @@ interface InputDatePickerProps {
   onChange: (date: Date) => void;
 }
 
-function InputDatePicker({ label, value, iconName, onChange }: InputDatePickerProps) {
+function InputDatePicker({
+  label,
+  value,
+  iconName,
+  onChange,
+}: InputDatePickerProps) {
   const [open, setOpen] = useState(false);
 
   return (
-    <View style={[styles.groupField]}>
-      <Text style={[styles.fieldLabel]}>{label}</Text>
-      <View style={[styles.fieldInput]}>
+    <View style={styles.groupField}>
+      <Text style={styles.fieldLabel}>{label}</Text>
+      <View style={styles.fieldInput}>
         <TextInput
           style={{color: '#242c40'}}
           value={dayjs(value).format('DD/MM/YYYY')}
