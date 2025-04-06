@@ -1,15 +1,10 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import styles from './styles';
 
 interface InputFieldProps {
-  label: string;
+  label?: string;
   placeholder?: string;
   value: string;
   onChangeText?: (text: string) => void;
@@ -27,10 +22,9 @@ const InputField: React.FC<InputFieldProps> = ({
   onIconPress,
   iconName,
 }) => (
-  <View style={[styles.groupField]}>
-    <Text style={[styles.fieldLabel]}>{label}</Text>
-    <View
-      style={[styles.fieldInput]}>
+  <View style={styles.groupField}>
+    {label && <Text style={styles.fieldLabel}>{label}</Text>}
+    <View style={styles.fieldInput}>
       <TextInput
         style={{color: '#242c40'}}
         placeholder={placeholder}

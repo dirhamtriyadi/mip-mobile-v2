@@ -1,4 +1,6 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import Button from '@src/components/Button';
+import InputField from '@src/components/InputField';
 import RefreshableScrollView from '@src/components/RefreshableScrollView';
 import { PenagihanData } from '@src/types/penagihan';
 import dayjs from 'dayjs';
@@ -11,6 +13,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import DatePicker from 'react-native-date-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { RootStackParamList } from '../../../App';
@@ -20,6 +23,12 @@ import styles from './styles';
 function PenagihanScreen() {
   const [data, setData] = useState<PenagihanData[]>([]);
   const [search, setSearch] = useState<string>('');
+  const [startDate, setStartDate] = useState<string>(
+    dayjs().startOf('month').format('YYYY-MM-DD'),
+  );
+  const [endDate, setEndDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
+  const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
+  const [openEndDatePicker, setOpenEndDatePicker] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
@@ -33,7 +42,11 @@ function PenagihanScreen() {
     try {
       setLoading(true);
       const response = await instance.get('v1/customer-billings', {
-        params: search ? {search} : {},
+        params: {
+          search: search || undefined, // Kirim `search` jika ada
+          start_date: startDate, // Kirim `startDate`
+          end_date: endDate, // Kirim `endDate`
+        },
       });
       setData(response.data.data);
     } catch (error: any) {
@@ -60,9 +73,38 @@ function PenagihanScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headContainer}>
-        <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10}}>
-          List Tagihan
-        </Text>
+        <Text style={{fontSize: 16, fontWeight: 'bold'}}>Filter Tanggal</Text>
+        <View
+          style={{
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            gap: 10,
+          }}>
+          <View style={{flex: 3}}>
+            <InputField
+              placeholder="Pilih Tanggal Awal"
+              value={startDate}
+              editable={false}
+              onIconPress={() => setOpenStartDatePicker(true)}
+              onChangeText={() => {}}
+              iconName="calendar"
+            />
+          </View>
+          <View style={{flex: 3}}>
+            <InputField
+              placeholder="Pilih Tanggal Akhir"
+              value={endDate}
+              editable={false}
+              onIconPress={() => setOpenEndDatePicker(true)}
+              onChangeText={() => {}}
+              iconName="calendar"
+            />
+          </View>
+          <View style={{flex: 2}}>
+            {/* <View style={{flex: 2, alignSelf: 'center'}}> */}
+            <Button label="Filter" onPress={() => fetchBillings()} />
+          </View>
+        </View>
         <View style={styles.groupSearch}>
           <TextInput
             placeholder="Masukan kata pencarian"
@@ -146,6 +188,32 @@ function PenagihanScreen() {
           )}
         </View>
       </RefreshableScrollView>
+      <DatePicker
+        modal
+        mode="date"
+        // minimumDate={dayjs(endDate).toDate()}
+        maximumDate={dayjs(endDate).toDate()}
+        open={openStartDatePicker}
+        date={dayjs(startDate).toDate()}
+        onConfirm={date => {
+          setStartDate(dayjs(date).format('YYYY-MM-DD'));
+          setOpenStartDatePicker(false);
+        }}
+        onCancel={() => setOpenStartDatePicker(false)}
+      />
+      <DatePicker
+        modal
+        mode="date"
+        minimumDate={dayjs(startDate).toDate()}
+        // maximumDate={dayjs(endDate).toDate()}
+        open={openEndDatePicker}
+        date={dayjs(endDate).toDate()}
+        onConfirm={date => {
+          setEndDate(dayjs(date).format('YYYY-MM-DD'));
+          setOpenEndDatePicker(false);
+        }}
+        onCancel={() => setOpenEndDatePicker(false)}
+      />
     </SafeAreaView>
   );
 }
