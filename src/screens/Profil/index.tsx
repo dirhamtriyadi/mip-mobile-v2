@@ -130,15 +130,10 @@ function ProfilScreen() {
   return (
     <SafeAreaView style={globalStyles.container}>
       <RefreshableScrollView refreshing={refreshing} onRefresh={onRefresh}>
-        <View
-          style={[
-            globalStyles.formContainer,
-            styles.formGroup,
-            {marginTop: 10, marginBottom: 5},
-          ]}>
+        <View style={styles.formGroup}>
           <Text style={styles.title}>Edit Profil</Text>
         </View>
-        <View style={[globalStyles.formContainer, styles.formGroup]}>
+        <View style={styles.formGroup}>
           <Controller
             control={controlProfil}
             name="name"
@@ -297,15 +292,10 @@ function ProfilScreen() {
             onPress={handleSubmitProfil(handleSaveProfil)}
           />
         </View>
-        <View
-          style={[
-            globalStyles.formContainer,
-            styles.formGroup,
-            {marginTop: 10, marginBottom: 5},
-          ]}>
+        <View style={styles.formGroup}>
           <Text style={styles.title}>Edit Password</Text>
         </View>
-        <View style={[globalStyles.formContainer, styles.formGroup]}>
+        <View style={styles.formGroup}>
           <Controller
             control={controlPassword}
             name="password"
