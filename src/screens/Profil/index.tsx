@@ -1,21 +1,29 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import Button from '@src/components/Button';
+import RefreshableScrollView from '@src/components/RefreshableScrollView';
+import {
+  updatePasswordSchema,
+  UpdatePasswordSchema,
+  updateProfilSchema,
+  UpdateProfilSchema,
+} from '@src/schema/profil';
+import globalStyles from '@styles/styles';
+import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import {
   ActivityIndicator,
   Alert,
   SafeAreaView,
-  ScrollView,
+  Text,
   TextInput,
+  View,
 } from 'react-native';
-import {Text, View} from 'react-native';
-import styles from './styles';
-import globalStyles from '@styles/styles';
-import React, {useEffect, useState} from 'react';
 import instance from '../../configs/axios';
-import Button from '@src/components/Button';
-import {Controller, useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
+import styles from './styles';
 
 function ProfilScreen() {
   const [loading, setLoading] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const {
     control: controlProfil,
@@ -112,9 +120,16 @@ function ProfilScreen() {
     );
   }
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await getProfil();
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setRefreshing(false);
+  };
+
   return (
     <SafeAreaView style={globalStyles.container}>
-      <ScrollView>
+      <RefreshableScrollView refreshing={refreshing} onRefresh={onRefresh}>
         <View
           style={[
             globalStyles.formContainer,
@@ -404,15 +419,9 @@ function ProfilScreen() {
             onPress={handleSubmitPassword(handleSavePassword)}
           />
         </View>
-      </ScrollView>
+      </RefreshableScrollView>
     </SafeAreaView>
   );
 }
-import {
-  updatePasswordSchema,
-  UpdatePasswordSchema,
-  updateProfilSchema,
-  UpdateProfilSchema,
-} from '@src/schema/profil';
 
 export default ProfilScreen;
