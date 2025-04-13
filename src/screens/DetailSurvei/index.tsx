@@ -310,9 +310,21 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
 
       // Menambahkan gambar ke FormData
       const imageFields = {
-        signature_officer: formDataSurvei.signature_officer,
-        signature_customer: formDataSurvei.signature_customer,
-        signature_couple: formDataSurvei.signature_couple,
+        signature_officer: {
+          uri: formDataSurvei.signature_officer,
+          type: 'image/png',
+          name: 'signature_officer.png',
+        },
+        signature_customer: {
+          uri: formDataSurvei.signature_customer,
+          type: 'image/png',
+          name: 'signature_customer.png',
+        },
+        signature_couple: {
+          uri: formDataSurvei.signature_couple,
+          type: 'image/png',
+          name: 'signature_couple.png',
+        },
         workplace_image1: imageWorkplace1,
         workplace_image2: imageWorkplace2,
         customer_image: imageCustomer,
