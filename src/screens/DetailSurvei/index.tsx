@@ -1,10 +1,26 @@
+import { BASE_URL } from '@env';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import AccordionSection from '@src/components/AccordionSection';
+import Button from '@src/components/Button';
+import ImagePicker from '@src/components/ImagePicker';
+import InputCurrency from '@src/components/InputCurrency';
 import InputField from '@src/components/InputField';
 import InputFieldNumber from '@src/components/InputFieldNumber';
 import InputFieldTextArea from '@src/components/InputFieldTextArea';
+import InputSignature from '@src/components/InputSignature';
+import InputStatusPicker from '@src/components/InputStatusPicker';
 import LocationPicker from '@src/components/LocationPicker';
-import {useLocation} from '@src/hooks/useLocation';
+import instance from '@src/configs/axios';
+import useDatePicker from '@src/hooks/useDatePicker';
+import useImagePicker from '@src/hooks/useImagePicker';
+import { useLocation } from '@src/hooks/useLocation';
+import { useNotification } from '@src/hooks/useNotification';
 import globalStyles from '@src/styles/styles';
-import {useCallback, useEffect, useState} from 'react';
+import { SurveiFormData } from '@src/types/survei';
+import { RootStackParamList } from 'App';
+import dayjs from 'dayjs';
+import { useCallback, useEffect, useState } from 'react';
 import {
   Alert,
   PermissionsAndroid,
@@ -14,24 +30,8 @@ import {
   Text,
   View,
 } from 'react-native';
-import InputCurrency from '@src/components/InputCurrency';
-import dayjs from 'dayjs';
-import useDatePicker from '@src/hooks/useDatePicker';
-import DatePicker from 'react-native-date-picker';
-import InputStatusPicker from '@src/components/InputStatusPicker';
-import InputSignature from '@src/components/InputSignature';
-import AccordionSection from '@src/components/AccordionSection';
-import ImagePicker from '@src/components/ImagePicker';
-import useImagePicker from '@src/hooks/useImagePicker';
-import {SurveiFormData} from '@src/types/survei';
-import instance from '@src/configs/axios';
-import Button from '@src/components/Button';
-import {useNotification} from '@src/hooks/useNotification';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from 'App';
 import RNFetchBlob from 'react-native-blob-util';
-import {BASE_URL} from '@env';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import DatePicker from 'react-native-date-picker';
 
 interface DetailSurveiScreenProps {
   route: any;
@@ -442,24 +442,6 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
     const fileName = `customer_survey_${formDataSurvei.name}.pdf`;
     downloadFile(fileUrl, fileName);
   }, [id, formDataSurvei]);
-
-  const requestManageStoragePermission = async () => {
-    if (Number(Platform.Version) >= 30) {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.MANAGE_EXTERNAL_STORAGE,
-      );
-
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('Izin penyimpanan penuh diberikan.');
-      } else {
-        console.log('Izin penyimpanan penuh ditolak.');
-      }
-    }
-  };
-
-  useEffect(() => {
-    requestManageStoragePermission();
-  }, []);
 
   return (
     <SafeAreaView style={globalStyles.container}>
