@@ -1,6 +1,6 @@
-import { BASE_URL } from '@env';
+import {BASE_URL} from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import AccordionSection from '@src/components/AccordionSection';
 import Button from '@src/components/Button';
 import ImagePicker from '@src/components/ImagePicker';
@@ -14,13 +14,13 @@ import LocationPicker from '@src/components/LocationPicker';
 import instance from '@src/configs/axios';
 import useDatePicker from '@src/hooks/useDatePicker';
 import useImagePicker from '@src/hooks/useImagePicker';
-import { useLocation } from '@src/hooks/useLocation';
-import { useNotification } from '@src/hooks/useNotification';
+import {useLocation} from '@src/hooks/useLocation';
+import {useNotification} from '@src/hooks/useNotification';
 import globalStyles from '@src/styles/styles';
-import { SurveiFormData } from '@src/types/survei';
-import { RootStackParamList } from 'App';
+import {SurveiFormData} from '@src/types/survei';
+import {RootStackParamList} from 'App';
 import dayjs from 'dayjs';
-import { useCallback, useEffect, useState } from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {
   Alert,
   PermissionsAndroid,
@@ -447,11 +447,6 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
     <SafeAreaView style={globalStyles.container}>
       <ScrollView scrollEnabled={scrollEnabled}>
         <View style={globalStyles.formContainer}>
-          <Button
-            label="Download pdf"
-            style={{marginTop: 10}}
-            onPress={handleDownloadPDF}
-          />
           <AccordionSection title="1. CIF">
             <InputField
               label="Nama"
@@ -1321,11 +1316,21 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
               />
             </View>
           </AccordionSection>
-          <Button
-            label="Kirim"
-            style={{marginBottom: 10}}
-            onPress={handleSubmit}
-          />
+          <View
+            style={{
+              flexDirection: 'row',
+              gap: 5,
+            }}>
+            <View style={{flex: 2}}>
+              <Button label="Selesai" onPress={() => {}} />
+            </View>
+            <View style={{flex: 2}}>
+              <Button label="Download pdf" onPress={handleDownloadPDF} />
+            </View>
+            <View style={{flex: 2}}>
+              <Button label="Simpan" onPress={handleSubmit} />
+            </View>
+          </View>
         </View>
       </ScrollView>
       <DatePicker
