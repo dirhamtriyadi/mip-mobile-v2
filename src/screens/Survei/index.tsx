@@ -1,14 +1,14 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import Button from '@src/components/Button';
 import Divider from '@src/components/Divider';
 import InputField from '@src/components/InputField';
 import RefreshableScrollView from '@src/components/RefreshableScrollView';
 import instance from '@src/configs/axios';
 import globalStyles from '@src/styles/styles';
-import { SurveiFormData } from '@src/types/survei';
-import { RootStackParamList } from 'App';
+import {SurveiFormData} from '@src/types/survei';
+import {RootStackParamList} from 'App';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -51,7 +51,6 @@ function DetailSurveiScreen() {
         },
       });
       setData(response.data.data);
-      console.log(response.data.data);
     } catch (error: any) {
       Alert.alert(
         'Gagal mengambil data penagihan',
@@ -165,6 +164,14 @@ function DetailSurveiScreen() {
                 <Text>
                   <Text style={{fontWeight: 'bold'}}>No. HP:</Text>{' '}
                   {item.phone_number}
+                </Text>
+                <Text>
+                  <Text style={{fontWeight: 'bold'}}>Status:</Text>{' '}
+                  {item.status === 'done'
+                    ? 'Selesai'
+                    : item.status === 'ongoing'
+                    ? 'Belum Selesai'
+                    : 'Menunggu'}
                 </Text>
               </TouchableOpacity>
             ))

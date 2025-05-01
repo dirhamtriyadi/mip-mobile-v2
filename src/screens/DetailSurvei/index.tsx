@@ -41,6 +41,7 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
   const {id} = route.params;
   const [formDataSurvei, setFormDataSurvei] = useState<SurveiFormData>({
     id: '',
+    status: 'ongoing',
     name: '',
     address: '',
     number_ktp: '',
@@ -222,6 +223,7 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
       const formData = new FormData();
       const surveyData = {
         _method: 'PUT',
+        status: formDataSurvei.status,
         name: formDataSurvei.name,
         address: formDataSurvei.address,
         number_ktp: formDataSurvei.number_ktp,
@@ -442,6 +444,45 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
     const fileName = `customer_survey_${formDataSurvei.name}.pdf`;
     downloadFile(fileUrl, fileName);
   }, [id, formDataSurvei]);
+
+  const handleUpdateStatusDone = useCallback(() => {
+    Alert.alert('Survey!', 'Apakah anda yakin ingin menyelesaikan survey?', [
+      {
+        text: 'Batal',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: () => updateStatusDone(),
+      },
+    ]);
+  }, []);
+
+  const updateStatusDone = useCallback(async () => {
+    try {
+      await instance.put(
+        `v1/prospective-customer-surveys/${id}/update-status`,
+        {
+          status: 'done',
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        },
+      );
+      Alert.alert('Berhasil', 'Status survey berhasil diperbarui', [
+        {text: 'OK', onPress: () => navigation.navigate('Home')},
+      ]);
+      showNotification('Penagihan', 'Status penagihan berhasil ditambahkan');
+      return navigation.navigate('Home');
+    } catch (error: any) {
+      console.log(error);
+      Alert.alert('Error', error.message);
+    }
+  }, []);
 
   return (
     <SafeAreaView style={globalStyles.container}>
@@ -1321,15 +1362,19 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
               flexDirection: 'row',
               gap: 5,
             }}>
-            <View style={{flex: 2}}>
-              <Button label="Selesai" onPress={() => {}} />
-            </View>
-            <View style={{flex: 2}}>
+            {formDataSurvei.status !== 'done' && (
+              <View style={{flex: 2}}>
+                <Button label="Selesai" onPress={handleUpdateStatusDone} />
+              </View>
+            )}
+            <View style={{flex: formDataSurvei.status === 'done' ? 1 : 2}}>
               <Button label="Download pdf" onPress={handleDownloadPDF} />
             </View>
-            <View style={{flex: 2}}>
-              <Button label="Simpan" onPress={handleSubmit} />
-            </View>
+            {formDataSurvei.status !== 'done' && (
+              <View style={{flex: 2}}>
+                <Button label="Simpan" onPress={handleSubmit} />
+              </View>
+            )}
           </View>
         </View>
       </ScrollView>

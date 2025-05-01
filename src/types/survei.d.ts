@@ -1,5 +1,6 @@
 export type SurveiFormData = {
   id: string;
+  status: string;
   name: string;
   address: string;
   number_ktp: string;
