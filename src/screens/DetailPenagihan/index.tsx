@@ -1,17 +1,15 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {ScrollView, View, Alert} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import instance from '../../configs/axios';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../../App';
-import dayjs from 'dayjs';
 import useImagePicker from '@hooks/useImagePicker';
 import {useNotification} from '@hooks/useNotification';
-import globalStyles from '@styles/styles';
-import styles from './styles';
-import Button from '@src/components/Button';
-import FormPenagihan from './form';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {DetailPenagihanData} from '@src/types/detailPenagihan';
+import globalStyles from '@styles/styles';
+import dayjs from 'dayjs';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Alert, ScrollView} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {RootStackParamList} from '../../../App';
+import instance from '../../configs/axios';
+import FormPenagihan from './form';
 
 interface DetailPenagihanScreenProps {
   route: any;
@@ -38,7 +36,7 @@ function DetailPenagihanScreen({route}: DetailPenagihanScreenProps) {
         address: '',
         village: '',
         subdistrict: '',
-      }
+      },
     },
     user_id: 0,
     status: 'visit',
@@ -80,8 +78,9 @@ function DetailPenagihanScreen({route}: DetailPenagihanScreenProps) {
           customer_address: {
             address: response.data.data.customer.customer_address.address,
             village: response.data.data.customer.customer_address.village,
-            subdistrict: response.data.data.customer.customer_address.subdistrict,
-          }
+            subdistrict:
+              response.data.data.customer.customer_address.subdistrict,
+          },
         },
       }));
     } catch (error: any) {
@@ -182,10 +181,8 @@ function DetailPenagihanScreen({route}: DetailPenagihanScreenProps) {
           onImageSelect={handleImageSelect}
           onImageReset={handleClickReset}
           onScrollEnabledChange={setScrollEnabled}
+          onHandleSubmit={handleSubmit}
         />
-        <View style={[styles.formContainer, {marginBottom: 10}]}>
-          <Button label="Simpan" onPress={handleSubmit} />
-        </View>
       </ScrollView>
     </SafeAreaView>
   );

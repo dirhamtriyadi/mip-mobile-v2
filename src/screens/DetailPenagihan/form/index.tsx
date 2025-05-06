@@ -1,14 +1,16 @@
+import ImagePicker from '@components/ImagePicker';
+import InputCurrency from '@components/InputCurrency';
+import InputDatePicker from '@components/InputDatePicker';
+import InputField from '@components/InputField';
+import InputFieldTextArea from '@components/InputFieldTextArea';
+import InputSignature from '@components/InputSignature';
+import InputStatusPicker from '@components/InputStatusPicker';
+import Button from '@src/components/Button';
+import globalStyles from '@src/styles/styles';
+import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
-import InputField from '@components/InputField';
-import InputCurrency from '@components/InputCurrency';
-import ImagePicker from '@components/ImagePicker';
-import InputSignature from '@components/InputSignature';
-import InputDatePicker from '@components/InputDatePicker';
-import InputStatusPicker from '@components/InputStatusPicker';
-import globalStyles from '@src/styles/styles';
-import InputFieldTextArea from '@components/InputFieldTextArea';
-import dayjs from 'dayjs';
+import styles from '../styles';
 
 interface FormPenagihanProps {
   data: any;
@@ -17,6 +19,7 @@ interface FormPenagihanProps {
   onImageSelect: () => void;
   onImageReset: () => void;
   onScrollEnabledChange?: (scrollEnabled: boolean) => void;
+  onHandleSubmit: () => void;
 }
 
 function FormPenagihan({
@@ -26,6 +29,7 @@ function FormPenagihan({
   onImageSelect,
   onImageReset,
   onScrollEnabledChange,
+  onHandleSubmit,
 }: FormPenagihanProps) {
   dayjs.locale('id');
   const [scrollEnabled, setScrollEnabled] = useState(true);
@@ -74,27 +78,31 @@ function FormPenagihan({
         onChangeText={() => {}}
       />
       <InputCurrency
-          label="Angsuran"
-          placeholder="Angsuran Bulan Kosong"
-          value={data.customer.installments || 0}
-          onChangeValue={() => {}}
-          editable={false}
-        />
-        <InputField
+        label="Angsuran"
+        placeholder="Angsuran Bulan Kosong"
+        value={data.customer.installments || 0}
+        onChangeValue={() => {}}
+        editable={false}
+      />
+      <InputField
         label="Tanggal Jatuh Tempo"
         placeholder="Tanggal Jatuh Tempo Kosong"
-        value={data.customer.due_date ? dayjs(data.customer.due_date).format('DD MMMM YYYY') : ''}
+        value={
+          data.customer.due_date
+            ? dayjs(data.customer.due_date).format('DD MMMM YYYY')
+            : ''
+        }
         editable={false}
-        iconName='calendar'
+        iconName="calendar"
         onChangeText={() => {}}
       />
       <InputStatusPicker
         value={data.status}
         onChange={value => onDataChange({...data, status: value})}
         options={[
-          { label: 'Kunjungan', value: 'visit' },
-          { label: 'Janji Bayar', value: 'promise_to_pay' },
-          { label: 'Bayar', value: 'pay' },
+          {label: 'Kunjungan', value: 'visit'},
+          {label: 'Janji Bayar', value: 'promise_to_pay'},
+          {label: 'Bayar', value: 'pay'},
         ]}
       />
       {data.status === 'promise_to_pay' && (
@@ -142,6 +150,9 @@ function FormPenagihan({
         }
         onScrollEnabledChange={scrollEnabled => setScrollEnabled(scrollEnabled)}
       />
+      <View style={[styles.formContainer, {marginBottom: 10}]}>
+        <Button label="Simpan" onPress={onHandleSubmit} />
+      </View>
     </View>
   );
 }
