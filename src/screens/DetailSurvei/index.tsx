@@ -220,8 +220,6 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
 
   const handleSubmit = useCallback(async () => {
     try {
-      console.log('Form Data Survei:', formDataSurvei.signature_officer);
-
       const formData = new FormData();
       const surveyData = {
         _method: 'PUT',
