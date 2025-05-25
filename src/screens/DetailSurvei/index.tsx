@@ -453,7 +453,7 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
 
   const handleDownloadPDF = useCallback(() => {
     const fileUrl = `${BASE_URL}v1/prospective-customer-surveys/${id}/export-pdf-by-customer`;
-    const fileName = `customer_survey_${formDataSurvei.name}.pdf`;
+    const fileName = `Survey_${formDataSurvei.name}.pdf`;
     downloadFile(fileUrl, fileName);
   }, [id, formDataSurvei]);
 
