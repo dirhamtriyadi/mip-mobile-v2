@@ -54,17 +54,17 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
     employee_status: '',
     job_type: '',
     salary: 0,
-    other_business: 0,
-    monthly_living_expenses: 0,
+    other_business: '',
+    monthly_living_expenses: '',
     children: '',
     wife: '',
     couple_jobs: '',
     couple_business: '',
     couple_income: 0,
-    bank_debt: 0,
-    cooperative_debt: 0,
-    personal_debt: 0,
-    online_debt: 0,
+    bank_debt: '',
+    cooperative_debt: '',
+    personal_debt: '',
+    online_debt: '',
     customer_character_analysis: '',
     financial_report_analysis: '',
     slik_result: '',
@@ -330,11 +330,23 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
 
       Object.entries(imageFields).forEach(([key, image]) => {
         if (image) {
-          formData.append(key, {
-            uri: image.uri,
-            type: image.type || 'image/png',
-            name: image.fileName || `${key}.png`,
-          });
+          if (
+            key === 'signature_officer' ||
+            key === 'signature_customer' ||
+            key === 'signature_couple'
+          ) {
+            formData.append(key, {
+              uri: `data:image/png;base64,${image}`,
+              type: 'image/png',
+              name: `${key}.png`,
+            });
+          } else {
+            formData.append(key, {
+              uri: image.uri,
+              type: image.type || 'image/png',
+              name: image.fileName || `${key}.png`,
+            });
+          }
         }
       });
 
@@ -625,25 +637,25 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
                 }));
               }}
             />
-            <InputCurrency
+            <InputField
               label="Usaha Tambahan"
               placeholder="Masukan usaha tambahan"
               value={formDataSurvei.other_business}
-              onChangeValue={text => {
+              onChangeText={text => {
                 setFormDataSurvei(prevData => ({
                   ...prevData,
-                  other_business: Number(text),
+                  other_business: text,
                 }));
               }}
             />
-            <InputCurrency
-              label="Biaya hidup per bulan*"
-              placeholder="Masukan biaya hidup per bulan"
+            <InputField
+              label="Biaya hidup per bulan"
+              placeholder="Masukan hidup per bulan"
               value={formDataSurvei.monthly_living_expenses}
-              onChangeValue={text => {
+              onChangeText={text => {
                 setFormDataSurvei(prevData => ({
                   ...prevData,
-                  monthly_living_expenses: Number(text),
+                  monthly_living_expenses: text,
                 }));
               }}
             />
@@ -706,47 +718,47 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
             />
           </AccordionSection>
           <AccordionSection title="3. Hutang">
-            <InputCurrency
+            <InputField
               label="Bank"
               placeholder="Masukan hutang bank"
               value={formDataSurvei.bank_debt}
-              onChangeValue={text => {
+              onChangeText={text => {
                 setFormDataSurvei(prevData => ({
                   ...prevData,
-                  bank_debt: Number(text),
+                  bank_debt: text,
                 }));
               }}
             />
-            <InputCurrency
+            <InputField
               label="Koperasi"
               placeholder="Masukan hutang koperasi"
               value={formDataSurvei.cooperative_debt}
-              onChangeValue={text => {
+              onChangeText={text => {
                 setFormDataSurvei(prevData => ({
                   ...prevData,
-                  cooperative_debt: Number(text),
+                  cooperative_debt: text,
                 }));
               }}
             />
-            <InputCurrency
+            <InputField
               label="Perorangan"
               placeholder="Masukan hutang perorangan"
               value={formDataSurvei.personal_debt}
-              onChangeValue={text => {
+              onChangeText={text => {
                 setFormDataSurvei(prevData => ({
                   ...prevData,
-                  personal_debt: Number(text),
+                  personal_debt: text,
                 }));
               }}
             />
-            <InputCurrency
+            <InputField
               label="Online"
               placeholder="Masukan hutang online"
               value={formDataSurvei.online_debt}
-              onChangeValue={text => {
+              onChangeText={text => {
                 setFormDataSurvei(prevData => ({
                   ...prevData,
-                  online_debt: Number(text),
+                  online_debt: text,
                 }));
               }}
             />
