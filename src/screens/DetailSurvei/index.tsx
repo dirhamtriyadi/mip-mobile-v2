@@ -220,6 +220,8 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
 
   const handleSubmit = useCallback(async () => {
     try {
+      console.log('Form Data Survei:', formDataSurvei.signature_officer);
+
       const formData = new FormData();
       const surveyData = {
         _method: 'PUT',
@@ -336,7 +338,7 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
             key === 'signature_couple'
           ) {
             formData.append(key, {
-              uri: `data:image/png;base64,${image}`,
+              uri: `${image}`,
               type: 'image/png',
               name: `${key}.png`,
             });
