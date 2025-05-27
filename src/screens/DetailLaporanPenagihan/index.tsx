@@ -1,12 +1,11 @@
+import Divider from '@src/components/Divider';
 import instance from '@src/configs/axios';
-import {useNotification} from '@src/hooks/useNotification';
+import globalStyles from '@src/styles/styles';
 import {DetailLaporanPenagihan} from '@src/types/detailLaporanPenagihan';
 import {useCallback, useEffect, useState} from 'react';
 import {Alert, ScrollView, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import styles from './styles';
-import globalStyles from '@src/styles/styles';
-import Divider from '@src/components/Divider';
 
 interface DetailLaporanPenagihanScreenProps {
   route: any;
@@ -215,7 +214,17 @@ function DetailLaporanPenagihanScreen({
                     <Text style={{margin: 5}}>
                       Tanggal Penagihan: {item.date_exec}
                     </Text>
-                    <Text style={{margin: 5}}>Status: <Text style={[getStatusStyle(item.status.value)]}>{item.status.label}</Text></Text>
+                    <Text style={{margin: 5}}>
+                      Status:{' '}
+                      <Text style={[getStatusStyle(item.status.value)]}>
+                        {item.status.label}
+                      </Text>
+                    </Text>
+                    {item.status.value === 'promise_to_pay' && (
+                      <Text style={{margin: 5}}>
+                        Tanggal Janji Bayar: {item.promise_date}
+                      </Text>
+                    )}
                     <Text style={{margin: 5}}>
                       Deskripsi: {item.description}
                     </Text>
