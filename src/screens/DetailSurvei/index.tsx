@@ -234,6 +234,7 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
         employee_tenure: formDataSurvei.employee_tenure,
         job_level: formDataSurvei.job_level,
         employee_status: formDataSurvei.employee_status,
+        job_type: formDataSurvei.job_type,
         salary: formDataSurvei.salary,
         other_business: formDataSurvei.other_business,
         monthly_living_expenses: formDataSurvei.monthly_living_expenses,
