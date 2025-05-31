@@ -2,9 +2,11 @@ import Button from '@src/components/Button';
 import ImagePicker from '@src/components/ImagePicker';
 import InputField from '@src/components/InputField';
 import InputFieldNumber from '@src/components/InputFieldNumber';
+import InputSelectPicker from '@src/components/InputSelectPicker';
 
 interface FormCalonNasabahProps {
   data: any;
+  banks?: {label: string; value: string}[];
   onDataChange: (data: any) => void;
   imageKtp: any;
   imageKk: any;
@@ -19,6 +21,7 @@ interface FormCalonNasabahProps {
 
 function FormCalonNasabah({
   data,
+  banks,
   onDataChange,
   imageKtp,
   imageKk,
@@ -56,16 +59,16 @@ function FormCalonNasabah({
           }));
         }}
       />
-      <InputField
-        label="Bank"
-        placeholder="Masukan Bank"
+      <InputSelectPicker
+        label="Pilih Bank"
         value={data.bank}
-        onChangeText={(value: string) => {
+        onChange={(value: string) => {
           onDataChange((prevData: any) => ({
             ...prevData,
             bank: value,
           }));
         }}
+        options={banks || []}
       />
       <ImagePicker
         image={imageKtp}

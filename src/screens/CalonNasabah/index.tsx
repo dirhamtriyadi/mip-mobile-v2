@@ -1,14 +1,14 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import instance from '@src/configs/axios';
 import useImagePicker from '@src/hooks/useImagePicker';
+import {useNotification} from '@src/hooks/useNotification';
 import globalStyles from '@src/styles/styles';
+import {CalonNasabahFormData} from '@src/types/calonNasabah';
+import {RootStackParamList} from 'App';
 import {useCallback, useEffect, useState} from 'react';
 import {Alert, SafeAreaView, ScrollView, View} from 'react-native';
 import FormCalonNasabah from './form';
-import instance from '@src/configs/axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {CalonNasabahFormData} from '@src/types/calonNasabah';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from 'App';
-import { useNotification } from '@src/hooks/useNotification';
 
 function CalonNasabahScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -34,6 +34,29 @@ function CalonNasabahScreen() {
     ktp: '',
     kk: '',
   });
+  const [banks, setBanks] = useState<{label: string; value: string}[]>([]);
+
+  const fetchBankList = useCallback(async () => {
+    try {
+      const response = await instance.get('v1/banks/all');
+      // console.log('Response bank list:', response.data);
+
+      if (response.data.status === 'success') {
+        const banks = response.data.data.map((bank: any) => ({
+          label: bank.name,
+          value: bank.id,
+        }));
+        setBanks(banks);
+      }
+    } catch (error) {
+      console.error('Error fetching bank list:', error);
+      Alert.alert('Gagal', 'Tidak dapat mengambil daftar bank');
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchBankList();
+  }, [fetchBankList]);
 
   useEffect(() => {
     setData(prevData => ({
@@ -53,7 +76,8 @@ function CalonNasabahScreen() {
     const formData = new FormData();
     formData.append('name', data.name);
     formData.append('no_ktp', data.no_ktp);
-    formData.append('bank', data.bank);
+    // formData.append('bank', data.bank);
+    formData.append('bank_id', data.bank);
     formData.append('user_id', user.id);
     formData.append('ktp', {
       uri: data.ktp.uri,
@@ -107,6 +131,7 @@ function CalonNasabahScreen() {
         <View style={globalStyles.formContainer}>
           <FormCalonNasabah
             data={data}
+            banks={banks}
             onDataChange={setData}
             imageKtp={imageKtp}
             imageKk={imageKk}
