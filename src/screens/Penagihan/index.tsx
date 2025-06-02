@@ -1,10 +1,10 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import Button from '@src/components/Button';
 import InputField from '@src/components/InputField';
 import RefreshableScrollView from '@src/components/RefreshableScrollView';
-import { PenagihanData } from '@src/types/penagihan';
+import {PenagihanData} from '@src/types/penagihan';
 import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -14,9 +14,9 @@ import {
   View,
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { RootStackParamList } from '../../../App';
+import {RootStackParamList} from '../../../App';
 import instance from '../../configs/axios';
 import styles from './styles';
 
@@ -24,7 +24,7 @@ function PenagihanScreen() {
   const [data, setData] = useState<PenagihanData[]>([]);
   const [search, setSearch] = useState<string>('');
   const [startDate, setStartDate] = useState<string>(
-    dayjs().startOf('month').format('YYYY-MM-DD'),
+    dayjs().startOf('year').format('YYYY-MM-DD'),
   );
   const [endDate, setEndDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
   const [openStartDatePicker, setOpenStartDatePicker] = useState(false);

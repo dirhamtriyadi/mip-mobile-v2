@@ -1,12 +1,12 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import Button from '@src/components/Button';
 import InputField from '@src/components/InputField';
 import RefreshableScrollView from '@src/components/RefreshableScrollView';
 import instance from '@src/configs/axios';
-import { LaporanPenagihanData } from '@src/types/laporanPenagihan';
-import { RootStackParamList } from 'App';
+import {LaporanPenagihanData} from '@src/types/laporanPenagihan';
+import {RootStackParamList} from 'App';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -24,7 +24,7 @@ function LaporanPenagihanScreen() {
   const [data, setData] = useState<LaporanPenagihanData[]>([]);
   const [search, setSearch] = useState<string>('');
   const [startDate, setStartDate] = useState<string>(
-    dayjs().startOf('month').format('YYYY-MM-DD'),
+    dayjs().startOf('year').format('YYYY-MM-DD'),
   );
   const [endDate, setEndDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
   const [openStartDatePicker, setOpenStartDatePicker] = useState(false);

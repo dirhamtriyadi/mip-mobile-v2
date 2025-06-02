@@ -26,7 +26,7 @@ function DetailSurveiScreen() {
   const [data, setData] = useState<SurveiFormData[]>([]);
   const [search, setSearch] = useState<string>('');
   const [startDate, setStartDate] = useState<string>(
-    dayjs().startOf('month').format('YYYY-MM-DD'),
+    dayjs().startOf('year').format('YYYY-MM-DD'),
   );
   const [endDate, setEndDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
   const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
