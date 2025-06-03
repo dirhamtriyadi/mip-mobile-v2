@@ -1,5 +1,6 @@
 import {zodResolver} from '@hookform/resolvers/zod';
 import Button from '@src/components/Button';
+import LoadingModal from '@src/components/LoadingModal';
 import RefreshableScrollView from '@src/components/RefreshableScrollView';
 import {
   updatePasswordSchema,
@@ -406,11 +407,13 @@ function ProfilScreen() {
           )}
 
           <Button
+            disabled={isLoading}
             label="Simpan"
             onPress={handleSubmitPassword(handleSavePassword)}
           />
         </View>
       </RefreshableScrollView>
+      <LoadingModal visible={isLoading} />
     </SafeAreaView>
   );
 }
