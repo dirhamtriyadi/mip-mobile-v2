@@ -10,6 +10,7 @@ interface FormCalonNasabahProps {
   onDataChange: (data: any) => void;
   imageKtp: any;
   imageKk: any;
+  loading?: boolean;
   handleClickOpenCameraKtp: () => void;
   handleClickOpenCameraKk: () => void;
   handleImageSelectKtp: () => void;
@@ -25,6 +26,7 @@ function FormCalonNasabah({
   onDataChange,
   imageKtp,
   imageKk,
+  loading = false,
   handleClickOpenCameraKtp,
   handleClickOpenCameraKk,
   handleImageSelectKtp,
@@ -84,7 +86,7 @@ function FormCalonNasabah({
         onOpenCamera={handleClickOpenCameraKk}
         onResetImage={handleClickResetKk}
       />
-      <Button label="Simpan" onPress={handleSubmit} />
+      <Button disabled={loading} label="Simpan" onPress={handleSubmit} />
     </>
   );
 }

@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
+import LoadingModal from '@src/components/LoadingModal';
 import instance from '@src/configs/axios';
 import useImagePicker from '@src/hooks/useImagePicker';
 import {useNotification} from '@src/hooks/useNotification';
@@ -34,6 +35,7 @@ function CalonNasabahScreen() {
     ktp: '',
     kk: '',
   });
+  const [loading, setLoading] = useState<boolean>(false);
   const [banks, setBanks] = useState<{label: string; value: string}[]>([]);
 
   const fetchBankList = useCallback(async () => {
@@ -91,6 +93,7 @@ function CalonNasabahScreen() {
     });
 
     try {
+      setLoading(true);
       instance.defaults.headers['Content-Type'] = 'multipart/form-data';
       const response = await instance.post(
         'v1/prospective-customers',
@@ -122,6 +125,8 @@ function CalonNasabahScreen() {
       } else {
         Alert.alert('Gagal', 'Terjadi kesalahan yang tidak diketahui.');
       }
+    } finally {
+      setLoading(false);
     }
   }, [data]);
 
@@ -130,6 +135,7 @@ function CalonNasabahScreen() {
       <ScrollView>
         <View style={globalStyles.formContainer}>
           <FormCalonNasabah
+            loading={loading}
             data={data}
             banks={banks}
             onDataChange={setData}
@@ -145,6 +151,7 @@ function CalonNasabahScreen() {
           />
         </View>
       </ScrollView>
+      <LoadingModal visible={loading} />
     </SafeAreaView>
   );
 }
