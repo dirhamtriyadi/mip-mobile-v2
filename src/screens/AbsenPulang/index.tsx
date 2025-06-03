@@ -1,24 +1,25 @@
-import React, {useState, useEffect} from 'react';
-import {ScrollView, View, Alert} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import DatePicker from 'react-native-date-picker';
-import {useUserData} from '@hooks/useUserData';
-import {useLocation} from '@src/hooks/useLocation';
-import instance from '../../configs/axios';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../../App';
-import dayjs from 'dayjs';
-import {useNotification} from '@hooks/useNotification';
-import useWorkSchedule from '@hooks/useWorkSchedule';
-import useImagePicker from '@hooks/useImagePicker';
-import useDatePicker from '@hooks/useDatePicker';
-import useTimePicker from '@hooks/useTimePicker';
-import InputField from '@components/InputField';
-import ReasonModal from '@components/ReasonModal';
-import LocationPicker from '@components/LocationPicker';
 import ImagePicker from '@components/ImagePicker';
-import globalStyles from '@styles/styles';
+import InputField from '@components/InputField';
+import LocationPicker from '@components/LocationPicker';
+import ReasonModal from '@components/ReasonModal';
+import useDatePicker from '@hooks/useDatePicker';
+import useImagePicker from '@hooks/useImagePicker';
+import {useNotification} from '@hooks/useNotification';
+import useTimePicker from '@hooks/useTimePicker';
+import {useUserData} from '@hooks/useUserData';
+import useWorkSchedule from '@hooks/useWorkSchedule';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import Button from '@src/components/Button';
+import LoadingModal from '@src/components/LoadingModal';
+import {useLocation} from '@src/hooks/useLocation';
+import globalStyles from '@styles/styles';
+import dayjs from 'dayjs';
+import React, {useEffect, useState} from 'react';
+import {Alert, ScrollView, View} from 'react-native';
+import DatePicker from 'react-native-date-picker';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {RootStackParamList} from '../../../App';
+import instance from '../../configs/axios';
 
 function SakitScreen() {
   const workSchedule = useWorkSchedule();
@@ -33,6 +34,7 @@ function SakitScreen() {
   const {showNotification} = useNotification();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     code: '',
     nik: '',
@@ -86,6 +88,7 @@ function SakitScreen() {
     }
 
     try {
+      setLoading(true);
       const formData = new FormData();
       formData.append('date', data.date.format('YYYY-MM-DD'));
       formData.append('time_check_out', data.time_check_out.format('HH:mm:ss'));
@@ -112,6 +115,8 @@ function SakitScreen() {
         error.response?.data?.message,
       ];
       messages.forEach((msg: string) => Alert.alert('Absen Pulang Gagal', msg));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -173,10 +178,11 @@ function SakitScreen() {
             getCurrentLocation={getCurrentLocation}
           />
           <View style={[globalStyles.groupField, {marginBottom: 10}]}>
-            <Button label="Simpan" onPress={handleSubmit} />
+            <Button disabled={loading} label="Simpan" onPress={handleSubmit} />
           </View>
         </View>
       </ScrollView>
+      <LoadingModal visible={loading} />
       <DatePicker
         modal
         mode="date"
