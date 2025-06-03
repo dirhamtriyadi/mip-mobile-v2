@@ -1,22 +1,23 @@
-import React, {useState, useEffect} from 'react';
-import {ScrollView, View, Alert} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import DatePicker from 'react-native-date-picker';
-import {useLocation} from '@src/hooks/useLocation';
-import instance from '../../configs/axios';
+import ImagePicker from '@components/ImagePicker';
+import InputField from '@components/InputField';
+import LocationPicker from '@components/LocationPicker';
+import useDatePicker from '@hooks/useDatePicker';
+import useImagePicker from '@hooks/useImagePicker';
+import {useNotification} from '@hooks/useNotification';
+import useTimePicker from '@hooks/useTimePicker';
 import {useUserData} from '@hooks/useUserData';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../../App';
-import dayjs from 'dayjs';
-import {useNotification} from '@hooks/useNotification';
-import useImagePicker from '@hooks/useImagePicker';
-import useDatePicker from '@hooks/useDatePicker';
-import useTimePicker from '@hooks/useTimePicker';
-import InputField from '@components/InputField';
-import ImagePicker from '@components/ImagePicker';
-import LocationPicker from '@components/LocationPicker';
-import globalStyles from '@styles/styles';
 import Button from '@src/components/Button';
+import LoadingModal from '@src/components/LoadingModal';
+import {useLocation} from '@src/hooks/useLocation';
+import globalStyles from '@styles/styles';
+import dayjs from 'dayjs';
+import React, {useEffect, useState} from 'react';
+import {Alert, ScrollView, View} from 'react-native';
+import DatePicker from 'react-native-date-picker';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {RootStackParamList} from '../../../App';
+import instance from '../../configs/axios';
 
 function IzinScreen() {
   const {image, handleClickOpenCamera, handleClickReset} = useImagePicker();
@@ -29,6 +30,7 @@ function IzinScreen() {
   const {showNotification} = useNotification();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState({
     code: '',
     nik: '',
@@ -79,6 +81,7 @@ function IzinScreen() {
     }
 
     try {
+      setIsLoading(true);
       const formData = new FormData();
       formData.append('date', data.date.format('YYYY-MM-DD'));
       formData.append('time_check_in', data.time_check_in.format('HH:mm:ss'));
@@ -105,6 +108,8 @@ function IzinScreen() {
         error.response?.data?.message ||
         'Terjadi kesalahan saat mengirim data.';
       Alert.alert('Gagal', errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -140,9 +145,10 @@ function IzinScreen() {
             location={location}
             getCurrentLocation={getCurrentLocation}
           />
-          <Button label="Simpan" onPress={handleSubmit} />
+          <Button disabled={isLoading} label="Simpan" onPress={handleSubmit} />
         </View>
       </ScrollView>
+      <LoadingModal visible={isLoading} />
       <DatePicker
         modal
         mode="date"
