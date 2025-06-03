@@ -1,18 +1,19 @@
 import InputField from '@components/InputField';
 import useDatePicker from '@hooks/useDatePicker';
-import { useNotification } from '@hooks/useNotification';
-import { useUserData } from '@hooks/useUserData';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import {useNotification} from '@hooks/useNotification';
+import {useUserData} from '@hooks/useUserData';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import Button from '@src/components/Button';
+import LoadingModal from '@src/components/LoadingModal';
 import RefreshableScrollView from '@src/components/RefreshableScrollView';
-import { CutiData } from '@src/types/cuti';
+import {CutiData} from '@src/types/cuti';
 import globalStyles from '@styles/styles';
 import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Text, View } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, Alert, Text, View} from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { RootStackParamList } from '../../../App';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {RootStackParamList} from '../../../App';
 import instance from '../../configs/axios';
 import styles from './styles';
 
@@ -42,7 +43,7 @@ function CutiScreen() {
   });
 
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [cutiData, setCutiData] = useState<CutiData | null>(null);
 
   useEffect(() => {
@@ -146,7 +147,11 @@ function CutiScreen() {
             iconName="calendar"
           />
           <View style={[globalStyles.groupField, {marginBottom: 10}]}>
-            <Button label="Ajukan Cuti" onPress={handleSubmit} />
+            <Button
+              disabled={isLoading}
+              label="Ajukan Cuti"
+              onPress={handleSubmit}
+            />
           </View>
 
           {isLoading ? (
@@ -187,6 +192,8 @@ function CutiScreen() {
           )}
         </View>
       </RefreshableScrollView>
+
+      <LoadingModal visible={isLoading} />
 
       <DatePicker
         modal
