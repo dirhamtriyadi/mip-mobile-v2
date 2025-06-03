@@ -1,6 +1,7 @@
 import useImagePicker from '@hooks/useImagePicker';
 import {useNotification} from '@hooks/useNotification';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
+import LoadingModal from '@src/components/LoadingModal';
 import {DetailPenagihanData} from '@src/types/detailPenagihan';
 import globalStyles from '@styles/styles';
 import dayjs from 'dayjs';
@@ -189,6 +190,7 @@ function DetailPenagihanScreen({route}: DetailPenagihanScreenProps) {
           onHandleSubmit={handleSubmit}
         />
       </ScrollView>
+      <LoadingModal visible={isLoading} />
     </SafeAreaView>
   );
 }

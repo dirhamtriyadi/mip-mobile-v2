@@ -10,6 +10,7 @@ import InputFieldNumber from '@src/components/InputFieldNumber';
 import InputFieldTextArea from '@src/components/InputFieldTextArea';
 import InputSignature from '@src/components/InputSignature';
 import InputStatusPicker from '@src/components/InputStatusPicker';
+import LoadingModal from '@src/components/LoadingModal';
 import LocationPicker from '@src/components/LocationPicker';
 import instance from '@src/configs/axios';
 import useDatePicker from '@src/hooks/useDatePicker';
@@ -122,7 +123,8 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
     salary_slip_image1: null,
     salary_slip_image2: null,
   });
-  const [scrollEnabled, setScrollEnabled] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [scrollEnabled, setScrollEnabled] = useState<boolean>(true);
 
   const {showNotification} = useNotification();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -220,6 +222,7 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
 
   const handleSubmit = useCallback(async () => {
     try {
+      setIsLoading(true);
       const formData = new FormData();
       const surveyData = {
         _method: 'PUT',
@@ -383,6 +386,8 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
         'Terjadi kesalahan saat prospective customer survey!',
         [{text: 'OK', onPress: () => console.log('OK Pressed')}],
       );
+    } finally {
+      setIsLoading(false);
     }
   }, [
     formDataSurvei,
@@ -474,6 +479,7 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
 
   const updateStatusDone = useCallback(async () => {
     try {
+      setIsLoading(true);
       await instance.put(
         `v1/prospective-customer-surveys/${id}/update-status`,
         {
@@ -494,6 +500,8 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
     } catch (error: any) {
       console.log(error);
       Alert.alert('Error', error.message);
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -1377,7 +1385,11 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
             }}>
             {formDataSurvei.status !== 'done' && (
               <View style={{flex: 2}}>
-                <Button label="Selesai" onPress={handleUpdateStatusDone} />
+                <Button
+                  disabled={isLoading}
+                  label="Selesai"
+                  onPress={handleUpdateStatusDone}
+                />
               </View>
             )}
             <View style={{flex: formDataSurvei.status === 'done' ? 1 : 2}}>
@@ -1385,12 +1397,17 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
             </View>
             {formDataSurvei.status !== 'done' && (
               <View style={{flex: 2}}>
-                <Button label="Simpan" onPress={handleSubmit} />
+                <Button
+                  disabled={isLoading}
+                  label="Simpan"
+                  onPress={handleSubmit}
+                />
               </View>
             )}
           </View>
         </View>
       </ScrollView>
+      <LoadingModal visible={isLoading} />
       <DatePicker
         modal
         mode="date"
