@@ -35,7 +35,7 @@ function CalonNasabahScreen() {
     ktp: '',
     kk: '',
   });
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [banks, setBanks] = useState<{label: string; value: string}[]>([]);
 
   const fetchBankList = useCallback(async () => {
@@ -93,7 +93,7 @@ function CalonNasabahScreen() {
     });
 
     try {
-      setLoading(true);
+      setIsLoading(true);
       instance.defaults.headers['Content-Type'] = 'multipart/form-data';
       const response = await instance.post(
         'v1/prospective-customers',
@@ -126,7 +126,7 @@ function CalonNasabahScreen() {
         Alert.alert('Gagal', 'Terjadi kesalahan yang tidak diketahui.');
       }
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }, [data]);
 
@@ -135,7 +135,7 @@ function CalonNasabahScreen() {
       <ScrollView>
         <View style={globalStyles.formContainer}>
           <FormCalonNasabah
-            loading={loading}
+            loading={isLoading}
             data={data}
             banks={banks}
             onDataChange={setData}
@@ -151,7 +151,7 @@ function CalonNasabahScreen() {
           />
         </View>
       </ScrollView>
-      <LoadingModal visible={loading} />
+      <LoadingModal visible={isLoading} />
     </SafeAreaView>
   );
 }

@@ -34,7 +34,7 @@ function SakitScreen() {
   const {showNotification} = useNotification();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState({
     code: '',
     nik: '',
@@ -88,7 +88,7 @@ function SakitScreen() {
     }
 
     try {
-      setLoading(true);
+      setIsLoading(true);
       const formData = new FormData();
       formData.append('date', data.date.format('YYYY-MM-DD'));
       formData.append('time_check_out', data.time_check_out.format('HH:mm:ss'));
@@ -116,7 +116,7 @@ function SakitScreen() {
       ];
       messages.forEach((msg: string) => Alert.alert('Absen Pulang Gagal', msg));
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -178,11 +178,15 @@ function SakitScreen() {
             getCurrentLocation={getCurrentLocation}
           />
           <View style={[globalStyles.groupField, {marginBottom: 10}]}>
-            <Button disabled={loading} label="Simpan" onPress={handleSubmit} />
+            <Button
+              disabled={isLoading}
+              label="Simpan"
+              onPress={handleSubmit}
+            />
           </View>
         </View>
       </ScrollView>
-      <LoadingModal visible={loading} />
+      <LoadingModal visible={isLoading} />
       <DatePicker
         modal
         mode="date"

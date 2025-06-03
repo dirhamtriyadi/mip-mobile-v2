@@ -34,7 +34,7 @@ function AbsenMasukScreen() {
   const {time, openTimePicker, setOpenTimePicker, handleTimeChange} =
     useTimePicker(dayjs());
 
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState(false);
   const [data, setData] = useState({
     code: '',
@@ -108,7 +108,7 @@ function AbsenMasukScreen() {
     }
 
     try {
-      setLoading(true);
+      setIsLoading(true);
       const formData = new FormData();
       formData.append('date', date.format('YYYY-MM-DD'));
       formData.append('time_check_in', time_check_in.format('HH:mm:ss'));
@@ -136,7 +136,7 @@ function AbsenMasukScreen() {
         error.response?.data?.message || 'Terjadi kesalahan saat absen!';
       Alert.alert('Absen Masuk Gagal', errorMsg);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }, [data, date, time]);
 
@@ -183,11 +183,15 @@ function AbsenMasukScreen() {
             getCurrentLocation={getCurrentLocation}
           />
           <View style={[globalStyles.groupField, {marginBottom: 10}]}>
-            <Button disabled={loading} label="Simpan" onPress={handleSubmit} />
+            <Button
+              disabled={isLoading}
+              label="Simpan"
+              onPress={handleSubmit}
+            />
           </View>
         </View>
       </ScrollView>
-      <LoadingModal visible={loading} />
+      <LoadingModal visible={isLoading} />
       <DatePicker
         modal
         mode="date"
