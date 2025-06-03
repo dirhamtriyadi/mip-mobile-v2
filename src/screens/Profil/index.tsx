@@ -1,4 +1,4 @@
-import { zodResolver } from '@hookform/resolvers/zod';
+import {zodResolver} from '@hookform/resolvers/zod';
 import Button from '@src/components/Button';
 import RefreshableScrollView from '@src/components/RefreshableScrollView';
 import {
@@ -8,8 +8,8 @@ import {
   UpdateProfilSchema,
 } from '@src/schema/profil';
 import globalStyles from '@styles/styles';
-import React, { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import React, {useEffect, useState} from 'react';
+import {Controller, useForm} from 'react-hook-form';
 import {
   ActivityIndicator,
   Alert,
@@ -22,7 +22,7 @@ import instance from '../../configs/axios';
 import styles from './styles';
 
 function ProfilScreen() {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const {
@@ -56,15 +56,16 @@ function ProfilScreen() {
 
   const getProfil = async () => {
     try {
-      setLoading(true);
+      setIsLoading(true);
       const response = await instance.get('v1/profile');
       const {name, email, detail_users} = response.data.data;
       setProfilValue('name', name);
       setProfilValue('email', email);
       setProfilValue('nik', detail_users?.nik || '');
-      setLoading(false);
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -74,7 +75,7 @@ function ProfilScreen() {
 
   const handleSaveProfil = async (data: UpdateProfilSchema) => {
     try {
-      setLoading(true);
+      setIsLoading(true);
       instance.defaults.headers['Content-Type'] = 'application/json';
       const response = await instance.put('v1/profile', {
         _method: 'put',
@@ -87,13 +88,13 @@ function ProfilScreen() {
         error.response?.data?.message || 'Gagal menyimpan data',
       );
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   const handleSavePassword = async (data: UpdatePasswordSchema) => {
     try {
-      setLoading(true);
+      setIsLoading(true);
       instance.defaults.headers['Content-Type'] = 'application/json';
       const response = await instance.put('v1/profile/update-password', {
         _method: 'put',
@@ -108,11 +109,11 @@ function ProfilScreen() {
         error.response?.data?.message || 'Gagal mengupdate password',
       );
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <View style={globalStyles.container}>
         <ActivityIndicator size="large" color="#0000ff" />
