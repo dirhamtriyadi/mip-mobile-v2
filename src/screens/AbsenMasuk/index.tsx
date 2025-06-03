@@ -4,20 +4,21 @@ import LocationPicker from '@components/LocationPicker';
 import ReasonModal from '@components/ReasonModal';
 import useDatePicker from '@hooks/useDatePicker';
 import useImagePicker from '@hooks/useImagePicker';
-import { useNotification } from '@hooks/useNotification';
+import {useNotification} from '@hooks/useNotification';
 import useTimePicker from '@hooks/useTimePicker';
-import { useUserData } from '@hooks/useUserData';
+import {useUserData} from '@hooks/useUserData';
 import useWorkSchedule from '@hooks/useWorkSchedule';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import Button from '@src/components/Button';
-import { useLocation } from '@src/hooks/useLocation';
+import LoadingModal from '@src/components/LoadingModal';
+import {useLocation} from '@src/hooks/useLocation';
 import globalStyles from '@styles/styles';
 import dayjs from 'dayjs';
-import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, ScrollView, View } from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Alert, ScrollView, View} from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { RootStackParamList } from '../../../App';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {RootStackParamList} from '../../../App';
 import instance from '../../configs/axios';
 
 function AbsenMasukScreen() {
@@ -33,6 +34,7 @@ function AbsenMasukScreen() {
   const {time, openTimePicker, setOpenTimePicker, handleTimeChange} =
     useTimePicker(dayjs());
 
+  const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [data, setData] = useState({
     code: '',
@@ -106,6 +108,7 @@ function AbsenMasukScreen() {
     }
 
     try {
+      setLoading(true);
       const formData = new FormData();
       formData.append('date', date.format('YYYY-MM-DD'));
       formData.append('time_check_in', time_check_in.format('HH:mm:ss'));
@@ -132,6 +135,8 @@ function AbsenMasukScreen() {
       const errorMsg =
         error.response?.data?.message || 'Terjadi kesalahan saat absen!';
       Alert.alert('Absen Masuk Gagal', errorMsg);
+    } finally {
+      setLoading(false);
     }
   }, [data, date, time]);
 
@@ -178,10 +183,11 @@ function AbsenMasukScreen() {
             getCurrentLocation={getCurrentLocation}
           />
           <View style={[globalStyles.groupField, {marginBottom: 10}]}>
-            <Button label="Simpan" onPress={handleSubmit} />
+            <Button disabled={loading} label="Simpan" onPress={handleSubmit} />
           </View>
         </View>
       </ScrollView>
+      <LoadingModal visible={loading} />
       <DatePicker
         modal
         mode="date"
