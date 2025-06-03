@@ -15,7 +15,7 @@ const LoadingModal: React.FC<LoadingModalProps> = ({visible}) => (
     <View style={styles.loadingContainer}>
       <View style={styles.loadingBox}>
         <ActivityIndicator size="large" color="#007bff" />
-        <Text style={styles.loadingText}>Mengirim data...</Text>
+        <Text style={styles.loadingText}>Loading...</Text>
       </View>
     </View>
   </Modal>
