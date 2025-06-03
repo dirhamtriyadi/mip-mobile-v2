@@ -20,7 +20,8 @@ function DetailPenagihanScreen({route}: DetailPenagihanScreenProps) {
   const {showNotification} = useNotification();
   const {image, handleClickOpenCamera, handleImageSelect, handleClickReset} =
     useImagePicker();
-  const [scrollEnabled, setScrollEnabled] = useState(true);
+  const [scrollEnabled, setScrollEnabled] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<DetailPenagihanData>({
     id: 0,
     bill_number: '',
@@ -96,6 +97,7 @@ function DetailPenagihanScreen({route}: DetailPenagihanScreenProps) {
 
   const handleSubmit = useCallback(async () => {
     try {
+      setIsLoading(true);
       const {
         id,
         bill_number,
@@ -168,6 +170,8 @@ function DetailPenagihanScreen({route}: DetailPenagihanScreenProps) {
         );
       }
       Alert.alert('Penagihan Gagal', `Gagal terjadi kesalahan.`);
+    } finally {
+      setIsLoading(false);
     }
   }, [data, image, navigation, showNotification]);
 
@@ -175,6 +179,7 @@ function DetailPenagihanScreen({route}: DetailPenagihanScreenProps) {
     <SafeAreaView style={globalStyles.container}>
       <ScrollView scrollEnabled={scrollEnabled}>
         <FormPenagihan
+          isLoading={isLoading}
           data={data}
           onDataChange={setData}
           onOpenCamera={handleClickOpenCamera}

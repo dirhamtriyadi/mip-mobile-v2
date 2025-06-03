@@ -14,6 +14,7 @@ import styles from '../styles';
 
 interface FormPenagihanProps {
   data: any;
+  isLoading?: boolean;
   onDataChange: (data: any) => void;
   onOpenCamera: () => void;
   onImageSelect: () => void;
@@ -24,6 +25,7 @@ interface FormPenagihanProps {
 
 function FormPenagihan({
   data,
+  isLoading = false,
   onDataChange,
   onOpenCamera,
   onImageSelect,
@@ -151,7 +153,7 @@ function FormPenagihan({
         onScrollEnabledChange={scrollEnabled => setScrollEnabled(scrollEnabled)}
       />
       <View style={[styles.formContainer, {marginBottom: 10}]}>
-        <Button label="Simpan" onPress={onHandleSubmit} />
+        <Button disabled={isLoading} label="Simpan" onPress={onHandleSubmit} />
       </View>
     </View>
   );
