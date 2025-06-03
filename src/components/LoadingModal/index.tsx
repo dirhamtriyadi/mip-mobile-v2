@@ -1,6 +1,5 @@
 import React from 'react';
-import {ActivityIndicator, Modal} from 'react-native';
-import {Text, View} from 'react-native-reanimated/lib/typescript/Animated';
+import {ActivityIndicator, Modal, Text, View} from 'react-native';
 import styles from './styles';
 
 interface LoadingModalProps {
