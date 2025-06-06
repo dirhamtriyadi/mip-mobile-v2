@@ -128,10 +128,15 @@ function AbsenMasukScreen() {
       instance.defaults.headers['Content-Type'] = 'multipart/form-data';
       await instance.post('v1/attendances/check-in', formData);
 
-      Alert.alert('Sukses', 'Absen masuk berhasil disubmit', [
-        {text: 'OK', onPress: () => navigation.navigate('Home')},
-      ]);
-      showNotification('Absen Masuk', 'Absen masuk berhasil disubmit');
+      Alert.alert(
+        'Absen Masuk Berhasil',
+        'Data absen masuk Anda telah berhasil disimpan',
+        [{text: 'OK', onPress: () => navigation.navigate('Home')}],
+      );
+      showNotification(
+        'Absen Masuk Berhasil',
+        'Data absen masuk Anda telah berhasil disimpan',
+      );
     } catch (error: any) {
       console.log('Error:', error.response?.data);
       const errorMessage = formatErrorMessage(error);
