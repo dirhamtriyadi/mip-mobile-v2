@@ -159,11 +159,14 @@ function DetailPenagihanScreen({route}: DetailPenagihanScreenProps) {
       await instance.post('v1/billing-followups', formData);
 
       Alert.alert(
-        'Penagihan berhasil',
-        'Status penagihan berhasil ditambahkan',
+        'Berhasil!',
+        'Data penagihan telah berhasil disimpan dan dikirim ke sistem',
         [{text: 'OK', onPress: () => navigation.navigate('Home')}],
       );
-      showNotification('Penagihan', 'Status penagihan berhasil ditambahkan');
+      showNotification(
+        'Penagihan Berhasil',
+        'Data penagihan telah berhasil disimpan',
+      );
     } catch (error: any) {
       console.log('Error:', error.response?.data);
       const errorMessage = formatErrorMessage(error);
