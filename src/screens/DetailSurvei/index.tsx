@@ -368,7 +368,7 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
         config,
       );
 
-      Alert.alert('Berhasil', 'Prospective customer survey berhasil disimpan', [
+      Alert.alert('Berhasil', 'Survei berhasil disimpan', [
         {text: 'OK', onPress: () => navigation.navigate('Home')},
       ]);
 
