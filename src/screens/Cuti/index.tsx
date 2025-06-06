@@ -94,9 +94,11 @@ function CutiScreen() {
       instance.defaults.headers['Content-Type'] = 'multipart/form-data';
       await instance.post('v1/leaves/submission', formData);
 
-      Alert.alert('Cuti berhasil', 'Cuti berhasil diajukan', [
-        {text: 'OK', onPress: () => navigation.navigate('Home')},
-      ]);
+      Alert.alert(
+        'Cuti berhasil diajukan',
+        'Pengajuan cuti Anda telah berhasil dikirim dan sedang menunggu persetujuan dari atasan.',
+        [{text: 'OK', onPress: () => navigation.navigate('Home')}],
+      );
       showNotification('Cuti berhasil', 'Cuti berhasil diajukan');
     } catch (error: any) {
       console.log('Error:', error.response?.data);
