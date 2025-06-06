@@ -3,6 +3,7 @@ import Button from '@src/components/Button';
 import InputField from '@src/components/InputField';
 import RefreshableScrollView from '@src/components/RefreshableScrollView';
 import instance from '@src/configs/axios';
+import {formatErrorMessage} from '@src/helpers/errror';
 import {LaporanPenagihanData} from '@src/types/laporanPenagihan';
 import {RootStackParamList} from 'App';
 import dayjs from 'dayjs';
@@ -54,11 +55,10 @@ function LaporanPenagihanScreen() {
       });
       setData(response.data.data);
     } catch (error: any) {
-      console.error(error);
-      Alert.alert(
-        'Error',
-        error.response?.data?.message || 'Terjadi kesalahan',
-      );
+      console.log('Error:', error.response?.data);
+      const errorMessage = formatErrorMessage(error);
+      Alert.alert('Gagal ambil data laporan penagihan', errorMessage);
+      navigation.goBack(); // Kembali ke layar sebelumnya jika terjadi error
     } finally {
       setLoading(false);
     }
