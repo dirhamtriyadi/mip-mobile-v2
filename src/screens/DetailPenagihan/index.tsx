@@ -21,7 +21,7 @@ function DetailPenagihanScreen({route}: DetailPenagihanScreenProps) {
   const {showNotification} = useNotification();
   const {image, handleClickOpenCamera, handleImageSelect, handleClickReset} =
     useImagePicker();
-  const [scrollEnabled, setScrollEnabled] = useState<boolean>(true);
+  // const [scrollEnabled, setScrollEnabled] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<DetailPenagihanData>({
     id: 0,
@@ -74,8 +74,12 @@ function DetailPenagihanScreen({route}: DetailPenagihanScreenProps) {
         customer: {
           name_customer: response.data.data.customer.name_customer,
           name_mother: response.data.data.customer.name_mother,
-          installments: response.data.data.customer.installments.toString(),
-          month_arrears: response.data.data.customer.month_arrears.toString(),
+          installments: response.data.data.customer.installments
+            ? response.data.data.customer.installments.toString()
+            : '',
+          month_arrears: response.data.data.customer.month_arrears
+            ? response.data.data.customer.month_arrears.toString()
+            : '',
           due_date: response.data.data.customer.due_date,
           customer_address: {
             address: response.data.data.customer.customer_address.address,
@@ -178,7 +182,8 @@ function DetailPenagihanScreen({route}: DetailPenagihanScreenProps) {
 
   return (
     <SafeAreaView style={globalStyles.container}>
-      <ScrollView scrollEnabled={scrollEnabled}>
+      <ScrollView>
+        {/* <ScrollView scrollEnabled={scrollEnabled}> */}
         <FormPenagihan
           isLoading={isLoading}
           data={data}
@@ -186,7 +191,7 @@ function DetailPenagihanScreen({route}: DetailPenagihanScreenProps) {
           onOpenCamera={handleClickOpenCamera}
           onImageSelect={handleImageSelect}
           onImageReset={handleClickReset}
-          onScrollEnabledChange={setScrollEnabled}
+          // onScrollEnabledChange={setScrollEnabled}
           onHandleSubmit={handleSubmit}
         />
       </ScrollView>

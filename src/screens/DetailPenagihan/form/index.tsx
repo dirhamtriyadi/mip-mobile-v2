@@ -3,12 +3,12 @@ import InputCurrency from '@components/InputCurrency';
 import InputDatePicker from '@components/InputDatePicker';
 import InputField from '@components/InputField';
 import InputFieldTextArea from '@components/InputFieldTextArea';
-import InputSignature from '@components/InputSignature';
 import InputStatusPicker from '@components/InputStatusPicker';
 import Button from '@src/components/Button';
+import InputSignatureV1 from '@src/components/InputSignatureV1';
 import globalStyles from '@src/styles/styles';
 import dayjs from 'dayjs';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {View} from 'react-native';
 import styles from '../styles';
 
@@ -30,17 +30,31 @@ function FormPenagihan({
   onOpenCamera,
   onImageSelect,
   onImageReset,
-  onScrollEnabledChange,
   onHandleSubmit,
 }: FormPenagihanProps) {
   dayjs.locale('id');
-  const [scrollEnabled, setScrollEnabled] = useState(true);
+  const [signatureModalConfig, setSignatureModalConfig] = useState({
+    visible: false,
+    type: '', // 'officer' or 'customer'
+    label: '',
+  });
 
-  useEffect(() => {
-    if (onScrollEnabledChange) {
-      onScrollEnabledChange(scrollEnabled);
-    }
-  }, [scrollEnabled]);
+  const handleSignatureConfirm = (result: string) => {
+    const field =
+      signatureModalConfig.type === 'officer'
+        ? 'signature_officer'
+        : 'signature_customer';
+    onDataChange({...data, [field]: result});
+    setSignatureModalConfig({visible: false, type: '', label: ''});
+  };
+
+  const handleOfficerSignatureChange = (value: string | null) => {
+    onDataChange({...data, signature_officer: value});
+  };
+
+  const handleCustomerSignatureChange = (value: string | null) => {
+    onDataChange({...data, signature_customer: value});
+  };
 
   return (
     <View style={globalStyles.formContainer}>
@@ -138,20 +152,19 @@ function FormPenagihan({
         value={data.description || ''}
         onChangeText={value => onDataChange({...data, description: value})}
       />
-      <InputSignature
-        label="TTD Petugas"
-        signature={data.signature_officer}
-        onConfirm={result => onDataChange({...data, signature_officer: result})}
-        onScrollEnabledChange={scrollEnabled => setScrollEnabled(scrollEnabled)}
+
+      <InputSignatureV1
+        label="Tanda Tangan Petugas"
+        value={data.signature_officer}
+        onSignatureChange={handleOfficerSignatureChange}
       />
-      <InputSignature
-        label="TTD Customer"
-        signature={data.signature_customer}
-        onConfirm={result =>
-          onDataChange({...data, signature_customer: result})
-        }
-        onScrollEnabledChange={scrollEnabled => setScrollEnabled(scrollEnabled)}
+
+      <InputSignatureV1
+        label="Tanda Tangan Customer"
+        value={data.signature_customer}
+        onSignatureChange={handleCustomerSignatureChange}
       />
+
       <View style={[styles.formContainer, {marginBottom: 10}]}>
         <Button disabled={isLoading} label="Simpan" onPress={onHandleSubmit} />
       </View>
