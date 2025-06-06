@@ -9,6 +9,7 @@ import {useUserData} from '@hooks/useUserData';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import Button from '@src/components/Button';
 import LoadingModal from '@src/components/LoadingModal';
+import {formatErrorMessage} from '@src/helpers/errror';
 import {useLocation} from '@src/hooks/useLocation';
 import globalStyles from '@styles/styles';
 import dayjs from 'dayjs';
@@ -116,10 +117,9 @@ function SakitScreen() {
       ]);
       showNotification('Sukses', 'Absen sakit berhasil disubmit');
     } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.message ||
-        'Terjadi kesalahan saat mengirim data.';
-      Alert.alert('Gagal', errorMessage);
+      console.log('Error:', error.response?.data);
+      const errorMessage = formatErrorMessage(error);
+      Alert.alert('Sakit kehadiran gagal ', errorMessage);
     } finally {
       setIsLoading(false);
     }
