@@ -1,5 +1,6 @@
 import Divider from '@src/components/Divider';
 import instance from '@src/configs/axios';
+import {formatErrorMessage} from '@src/helpers/errror';
 import globalStyles from '@src/styles/styles';
 import {DetailLaporanPenagihan} from '@src/types/detailLaporanPenagihan';
 import {useCallback, useEffect, useState} from 'react';
@@ -167,11 +168,9 @@ function DetailLaporanPenagihanScreen({
       }));
       console.log('Data fetched successfully:', response.data.data);
     } catch (error: any) {
-      console.error(error);
-      return Alert.alert(
-        'Error',
-        error.response?.data?.message || 'Terjadi kesalahan',
-      );
+      console.log('Error:', error.response?.data);
+      const errorMessage = formatErrorMessage(error);
+      Alert.alert('Gagal memuat data', errorMessage);
     }
   }, []);
 
