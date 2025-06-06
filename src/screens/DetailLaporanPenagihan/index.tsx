@@ -110,8 +110,12 @@ function DetailLaporanPenagihanScreen({
           ...prevData.customer,
           name_customer: response.data.data.customer.name_customer,
           name_mother: response.data.data.customer.name_mother,
-          installments: response.data.data.customer.installments.toString(),
-          month_arrears: response.data.data.customer.month_arrears.toString(),
+          installments: response.data.data.customer.installments
+            ? response.data.data.customer.installments.toString()
+            : '',
+          month_arrears: response.data.data.customer.month_arrears
+            ? response.data.data.customer.month_arrears.toString()
+            : '',
           due_date: response.data.data.customer.due_date,
           customer_address: {
             ...prevData.customer.customer_address,
