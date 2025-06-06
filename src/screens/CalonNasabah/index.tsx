@@ -111,14 +111,15 @@ function CalonNasabahScreen() {
         },
       );
 
-      if (response.data.status === 'success') {
-        Alert.alert(
-          'Data Nasabah Berhasil Ditambahkan',
-          'Data calon nasabah berhasil disimpan ke sistem',
-          [{text: 'OK', onPress: () => navigation.navigate('Home')}],
-        );
-        showNotification('Penagihan', 'Status penagihan berhasil ditambahkan');
-      }
+      Alert.alert(
+        'Berhasil!',
+        'Data calon nasabah telah berhasil disimpan ke dalam sistem. Terima kasih atas informasi yang telah diberikan.',
+        [{text: 'OK', onPress: () => navigation.navigate('Home')}],
+      );
+      showNotification(
+        'Data Tersimpan',
+        'Calon nasabah baru berhasil ditambahkan ke dalam sistem',
+      );
     } catch (error: any) {
       console.log('Error:', error.response?.data);
       const errorMessage = formatErrorMessage(error);
