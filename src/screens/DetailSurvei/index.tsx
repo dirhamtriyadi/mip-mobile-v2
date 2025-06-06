@@ -507,7 +507,7 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
   };
 
   const handleCoupleSignatureChange = (value: string | null) => {
-    setFormDataSurvei({...formDataSurvei, signature_customer: value});
+    setFormDataSurvei({...formDataSurvei, signature_couple: value});
   };
 
   return (
