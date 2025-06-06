@@ -112,9 +112,11 @@ function CalonNasabahScreen() {
       );
 
       if (response.data.status === 'success') {
-        Alert.alert('Berhasil', 'Data berhasil disimpan', [
-          {text: 'OK', onPress: () => navigation.navigate('Home')},
-        ]);
+        Alert.alert(
+          'Data Nasabah Berhasil Ditambahkan',
+          'Data calon nasabah berhasil disimpan ke sistem',
+          [{text: 'OK', onPress: () => navigation.navigate('Home')}],
+        );
         showNotification('Penagihan', 'Status penagihan berhasil ditambahkan');
       }
     } catch (error: any) {
