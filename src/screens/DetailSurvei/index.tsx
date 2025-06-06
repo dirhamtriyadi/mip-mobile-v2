@@ -8,7 +8,7 @@ import InputCurrency from '@src/components/InputCurrency';
 import InputField from '@src/components/InputField';
 import InputFieldNumber from '@src/components/InputFieldNumber';
 import InputFieldTextArea from '@src/components/InputFieldTextArea';
-import InputSignature from '@src/components/InputSignature';
+import InputSignatureV1 from '@src/components/InputSignatureV1';
 import InputStatusPicker from '@src/components/InputStatusPicker';
 import LoadingModal from '@src/components/LoadingModal';
 import LocationPicker from '@src/components/LocationPicker';
@@ -497,6 +497,18 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
       setIsLoading(false);
     }
   }, []);
+
+  const handleOfficerSignatureChange = (value: string | null) => {
+    setFormDataSurvei({...formDataSurvei, signature_officer: value});
+  };
+
+  const handleCustomerSignatureChange = (value: string | null) => {
+    setFormDataSurvei({...formDataSurvei, signature_customer: value});
+  };
+
+  const handleCoupleSignatureChange = (value: string | null) => {
+    setFormDataSurvei({...formDataSurvei, signature_customer: value});
+  };
 
   return (
     <SafeAreaView style={globalStyles.container}>
@@ -1228,38 +1240,20 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
               getCurrentLocation={getCurrentLocation}
               onDragMarker={changeLocationMarker}
             />
-            <InputSignature
+            <InputSignatureV1
               label="TTD Petugas"
-              signature={formDataSurvei.signature_officer}
-              onConfirm={result =>
-                setFormDataSurvei(prevData => ({
-                  ...prevData,
-                  signature_officer: result,
-                }))
-              }
-              onScrollEnabledChange={setScrollEnabled}
+              value={formDataSurvei.signature_officer}
+              onSignatureChange={handleOfficerSignatureChange}
             />
-            <InputSignature
+            <InputSignatureV1
               label="TTD Nasabah"
-              signature={formDataSurvei.signature_customer}
-              onConfirm={result =>
-                setFormDataSurvei(prevData => ({
-                  ...prevData,
-                  signature_customer: result,
-                }))
-              }
-              onScrollEnabledChange={setScrollEnabled}
+              value={formDataSurvei.signature_customer}
+              onSignatureChange={handleCustomerSignatureChange}
             />
-            <InputSignature
+            <InputSignatureV1
               label="TTD Pasangan/Penanggung Jawab"
-              signature={formDataSurvei.signature_couple}
-              onConfirm={result =>
-                setFormDataSurvei(prevData => ({
-                  ...prevData,
-                  signature_couple: result,
-                }))
-              }
-              onScrollEnabledChange={setScrollEnabled}
+              value={formDataSurvei.signature_couple}
+              onSignatureChange={handleCoupleSignatureChange}
             />
           </AccordionSection>
           <AccordionSection title="10. Berkas">
