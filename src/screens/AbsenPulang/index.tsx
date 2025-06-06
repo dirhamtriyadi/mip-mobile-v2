@@ -107,10 +107,15 @@ function SakitScreen() {
       instance.defaults.headers['Content-Type'] = 'multipart/form-data';
       await instance.post('v1/attendances/check-out', formData);
 
-      Alert.alert('Absen pulang berhasil', 'Absen pulang berhasil disubmit', [
-        {text: 'OK', onPress: () => navigation.navigate('Home')},
-      ]);
-      showNotification('Absen Pulang', 'Absen pulang berhasil disubmit');
+      Alert.alert(
+        'Absen Pulang Berhasil',
+        'Data absen pulang Anda telah berhasil tersimpan',
+        [{text: 'OK', onPress: () => navigation.navigate('Home')}],
+      );
+      showNotification(
+        'Absen Pulang Berhasil',
+        'Data absen pulang Anda telah berhasil tersimpan',
+      );
     } catch (error: any) {
       console.log('Error:', error.response?.data);
       const errorMessage = formatErrorMessage(error);
