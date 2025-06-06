@@ -2,6 +2,7 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import Button from '@src/components/Button';
 import InputField from '@src/components/InputField';
 import RefreshableScrollView from '@src/components/RefreshableScrollView';
+import {formatErrorMessage} from '@src/helpers/errror';
 import {PenagihanData} from '@src/types/penagihan';
 import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
@@ -50,10 +51,10 @@ function PenagihanScreen() {
       });
       setData(response.data.data);
     } catch (error: any) {
-      Alert.alert(
-        'Gagal mengambil data penagihan',
-        error.response?.data?.message || 'Terjadi kesalahan',
-      );
+      console.log('Error:', error.response?.data);
+      const errorMessage = formatErrorMessage(error);
+      Alert.alert('Gagal ambil data penagihan', errorMessage);
+      navigation.goBack(); // Kembali ke layar sebelumnya jika terjadi error
     } finally {
       setLoading(false);
     }
