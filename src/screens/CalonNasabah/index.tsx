@@ -120,7 +120,7 @@ function CalonNasabahScreen() {
     } catch (error: any) {
       console.log('Error:', error.response?.data);
       const errorMessage = formatErrorMessage(error);
-      Alert.alert('Gagal upload data calon nasabah!', errorMessage);
+      Alert.alert('Gagal upload data calon nasabah', errorMessage);
     } finally {
       setIsLoading(false);
     }
