@@ -95,11 +95,14 @@ function CutiScreen() {
       await instance.post('v1/leaves/submission', formData);
 
       Alert.alert(
-        'Cuti berhasil diajukan',
-        'Pengajuan cuti Anda telah berhasil dikirim dan sedang menunggu persetujuan dari atasan.',
+        'Pengajuan Cuti Berhasil',
+        'Pengajuan cuti Anda telah berhasil dikirim dan sedang menunggu persetujuan dari atasan. Anda akan mendapatkan notifikasi status persetujuan melalui aplikasi.',
         [{text: 'OK', onPress: () => navigation.navigate('Home')}],
       );
-      showNotification('Cuti berhasil', 'Cuti berhasil diajukan');
+      showNotification(
+        'Pengajuan Cuti Berhasil',
+        'Cuti berhasil diajukan dan sedang menunggu persetujuan atasan',
+      );
     } catch (error: any) {
       console.log('Error:', error.response?.data);
       const errorMessage = formatErrorMessage(error);
