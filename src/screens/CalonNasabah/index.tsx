@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import LoadingModal from '@src/components/LoadingModal';
 import instance from '@src/configs/axios';
+import {formatErrorMessage} from '@src/helpers/errror';
 import useImagePicker from '@src/hooks/useImagePicker';
 import {useNotification} from '@src/hooks/useNotification';
 import globalStyles from '@src/styles/styles';
@@ -40,8 +41,8 @@ function CalonNasabahScreen() {
 
   const fetchBankList = useCallback(async () => {
     try {
+      setIsLoading(true);
       const response = await instance.get('v1/banks/all');
-      // console.log('Response bank list:', response.data);
 
       if (response.data.status === 'success') {
         const banks = response.data.data.map((bank: any) => ({
@@ -50,9 +51,12 @@ function CalonNasabahScreen() {
         }));
         setBanks(banks);
       }
-    } catch (error) {
-      console.error('Error fetching bank list:', error);
-      Alert.alert('Gagal', 'Tidak dapat mengambil daftar bank');
+    } catch (error: any) {
+      console.log('Error:', error.response?.data);
+      const errorMessage = formatErrorMessage(error);
+      Alert.alert('Gagal', errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -107,24 +111,9 @@ function CalonNasabahScreen() {
         showNotification('Penagihan', 'Status penagihan berhasil ditambahkan');
       }
     } catch (error: any) {
-      // console.log(error.response.data);
-      if (error.response?.data?.status === 'error') {
-        if (error.response?.data?.errors) {
-          // Mengambil semua pesan error dari setiap field
-          let message = Object.entries(error.response.data.errors)
-            .map(([field, messages]) => (messages as string[]).join('\n'))
-            .join('\n');
-
-          Alert.alert('Gagal', message);
-        } else {
-          Alert.alert(
-            'Gagal',
-            `Terjadi kesalahan: ${error?.response?.data?.message}`,
-          );
-        }
-      } else {
-        Alert.alert('Gagal', 'Terjadi kesalahan yang tidak diketahui.');
-      }
+      console.log('Error:', error.response?.data);
+      const errorMessage = formatErrorMessage(error);
+      Alert.alert('Gagal upload data calon nasabah!', errorMessage);
     } finally {
       setIsLoading(false);
     }
