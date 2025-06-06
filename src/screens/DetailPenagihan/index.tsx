@@ -167,7 +167,7 @@ function DetailPenagihanScreen({route}: DetailPenagihanScreenProps) {
     } catch (error: any) {
       console.log('Error:', error.response?.data);
       const errorMessage = formatErrorMessage(error);
-      Alert.alert('Penagihan Gagal', errorMessage);
+      Alert.alert('Gagal upload penagihan', errorMessage);
     } finally {
       setIsLoading(false);
     }
