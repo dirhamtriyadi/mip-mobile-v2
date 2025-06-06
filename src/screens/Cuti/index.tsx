@@ -6,6 +6,7 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import Button from '@src/components/Button';
 import LoadingModal from '@src/components/LoadingModal';
 import RefreshableScrollView from '@src/components/RefreshableScrollView';
+import {formatErrorMessage} from '@src/helpers/errror';
 import {CutiData} from '@src/types/cuti';
 import globalStyles from '@styles/styles';
 import dayjs from 'dayjs';
@@ -62,14 +63,9 @@ function CutiScreen() {
       const response = await instance.get('v1/leaves');
       setCutiData(response.data.data);
     } catch (error: any) {
-      if (error.response?.status === 404) {
-        setCutiData(null);
-      } else {
-        Alert.alert(
-          'Gagal mengambil data cuti',
-          error.response?.data?.message || 'Terjadi kesalahan',
-        );
-      }
+      console.log('Error:', error.response?.data);
+      const errorMessage = formatErrorMessage(error);
+      Alert.alert('Gagal mengambil data cuti', errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -102,10 +98,9 @@ function CutiScreen() {
       ]);
       showNotification('Cuti berhasil', 'Cuti berhasil diajukan');
     } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.message ||
-        'Terjadi kesalahan saat mengajukan cuti';
-      Alert.alert('Cuti Gagal', errorMessage);
+      console.log('Error:', error.response?.data);
+      const errorMessage = formatErrorMessage(error);
+      Alert.alert('Data cuti gagal diajukan!', errorMessage);
     }
   };
 
