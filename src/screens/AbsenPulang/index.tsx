@@ -11,6 +11,7 @@ import useWorkSchedule from '@hooks/useWorkSchedule';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import Button from '@src/components/Button';
 import LoadingModal from '@src/components/LoadingModal';
+import {formatErrorMessage} from '@src/helpers/errror';
 import {useLocation} from '@src/hooks/useLocation';
 import globalStyles from '@styles/styles';
 import dayjs from 'dayjs';
@@ -111,10 +112,9 @@ function SakitScreen() {
       ]);
       showNotification('Absen Pulang', 'Absen pulang berhasil disubmit');
     } catch (error: any) {
-      const messages = error.response?.data?.message?.code || [
-        error.response?.data?.message,
-      ];
-      messages.forEach((msg: string) => Alert.alert('Absen Pulang Gagal', msg));
+      console.log('Error:', error.response?.data);
+      const errorMessage = formatErrorMessage(error);
+      Alert.alert('Absen pulang gagal', errorMessage);
     } finally {
       setIsLoading(false);
     }
