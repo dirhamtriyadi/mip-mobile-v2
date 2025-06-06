@@ -11,6 +11,7 @@ import useWorkSchedule from '@hooks/useWorkSchedule';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import Button from '@src/components/Button';
 import LoadingModal from '@src/components/LoadingModal';
+import {formatErrorMessage} from '@src/helpers/errror';
 import {useLocation} from '@src/hooks/useLocation';
 import globalStyles from '@styles/styles';
 import dayjs from 'dayjs';
@@ -132,9 +133,9 @@ function AbsenMasukScreen() {
       ]);
       showNotification('Absen Masuk', 'Absen masuk berhasil disubmit');
     } catch (error: any) {
-      const errorMsg =
-        error.response?.data?.message || 'Terjadi kesalahan saat absen!';
-      Alert.alert('Absen Masuk Gagal', errorMsg);
+      console.log('Error:', error.response?.data);
+      const errorMessage = formatErrorMessage(error);
+      Alert.alert('Absen masuk gagal', errorMessage);
     } finally {
       setIsLoading(false);
     }
