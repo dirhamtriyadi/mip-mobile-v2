@@ -4,6 +4,7 @@ import Divider from '@src/components/Divider';
 import InputField from '@src/components/InputField';
 import RefreshableScrollView from '@src/components/RefreshableScrollView';
 import instance from '@src/configs/axios';
+import {formatErrorMessage} from '@src/helpers/errror';
 import globalStyles from '@src/styles/styles';
 import {SurveiFormData} from '@src/types/survei';
 import {RootStackParamList} from 'App';
@@ -52,10 +53,10 @@ function DetailSurveiScreen() {
       });
       setData(response.data.data);
     } catch (error: any) {
-      Alert.alert(
-        'Gagal mengambil data penagihan',
-        error.response?.data?.message || 'Terjadi kesalahan',
-      );
+      console.log('Error:', error.response?.data);
+      const errorMessage = formatErrorMessage(error);
+      Alert.alert('Gagal mengambil data', errorMessage);
+      navigation.goBack(); // Kembali ke layar sebelumnya jika terjadi error
     } finally {
       setLoading(false);
     }
