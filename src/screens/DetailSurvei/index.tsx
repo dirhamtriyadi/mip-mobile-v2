@@ -368,11 +368,13 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
         config,
       );
 
-      Alert.alert('Berhasil', 'Survei berhasil disimpan', [
+      Alert.alert('Berhasil', 'Data survei berhasil diperbarui', [
         {text: 'OK', onPress: () => navigation.navigate('Home')},
       ]);
-
-      showNotification('Penagihan', 'Status penagihan berhasil ditambahkan');
+      showNotification(
+        'Survei Diperbarui',
+        'Data survei telah berhasil disimpan',
+      );
     } catch (error: any) {
       console.log('Error:', error.response?.data);
       const errorMessage = formatErrorMessage(error);
