@@ -86,6 +86,7 @@ function CutiScreen() {
     }
 
     try {
+      setIsLoading(true);
       const formData = new FormData();
       formData.append('start_date', data.start_date.format('YYYY-MM-DD'));
       formData.append('end_date', data.end_date.format('YYYY-MM-DD'));
@@ -101,6 +102,8 @@ function CutiScreen() {
       console.log('Error:', error.response?.data);
       const errorMessage = formatErrorMessage(error);
       Alert.alert('Data cuti gagal diajukan!', errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
