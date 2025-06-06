@@ -2,6 +2,7 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import Button from '@src/components/Button';
 import LoadingModal from '@src/components/LoadingModal';
 import RefreshableScrollView from '@src/components/RefreshableScrollView';
+import {formatErrorMessage} from '@src/helpers/errror';
 import {
   updatePasswordSchema,
   UpdatePasswordSchema,
@@ -63,8 +64,10 @@ function ProfilScreen() {
       setProfilValue('name', name);
       setProfilValue('email', email);
       setProfilValue('nik', detail_users?.nik || '');
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      console.log('Error:', error.response?.data);
+      const errorMessage = formatErrorMessage(error);
+      Alert.alert('Gagal mengambil data', errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -84,10 +87,9 @@ function ProfilScreen() {
       });
       Alert.alert('Success', response.data.message);
     } catch (error: any) {
-      Alert.alert(
-        'Error',
-        error.response?.data?.message || 'Gagal menyimpan data',
-      );
+      console.log('Error:', error.response?.data);
+      const errorMessage = formatErrorMessage(error);
+      Alert.alert('Gagal update profil', errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -105,10 +107,9 @@ function ProfilScreen() {
       setPasswordValue('password', '');
       setPasswordValue('confirm_password', '');
     } catch (error: any) {
-      Alert.alert(
-        'Error',
-        error.response?.data?.message || 'Gagal mengupdate password',
-      );
+      console.log('Error:', error.response?.data);
+      const errorMessage = formatErrorMessage(error);
+      Alert.alert('Gagal update password', errorMessage);
     } finally {
       setIsLoading(false);
     }
