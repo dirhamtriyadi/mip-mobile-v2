@@ -100,10 +100,16 @@ function IzinScreen() {
       instance.defaults.headers['Content-Type'] = 'multipart/form-data';
 
       await instance.post('v1/attendances/permit', formData);
-      Alert.alert('Sukses', 'Absen izin berhasil disubmit', [
-        {text: 'OK', onPress: () => navigation.navigate('Home')},
-      ]);
-      showNotification('Sukses', 'Absen izin berhasil disubmit');
+
+      Alert.alert(
+        'Izin Kehadiran Berhasil Disimpan',
+        'Pengajuan izin kehadiran Anda telah berhasil dikirim.',
+        [{text: 'OK', onPress: () => navigation.navigate('Home')}],
+      );
+      showNotification(
+        'Izin Kehadiran Berhasil Disimpan',
+        'Pengajuan izin kehadiran Anda telah berhasil dikirim.',
+      );
     } catch (error: any) {
       console.log('Error:', error.response?.data);
       const errorMessage = formatErrorMessage(error);
