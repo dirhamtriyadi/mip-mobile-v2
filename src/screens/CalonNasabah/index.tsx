@@ -73,41 +73,48 @@ function CalonNasabahScreen() {
   }, [imageKtp, imageKk]);
 
   const handleSubmit = useCallback(async () => {
-    const userString = await AsyncStorage.getItem('user');
-    const user = userString ? JSON.parse(userString) : null;
-    // if (!user) {
-    //   Alert.alert('Login', 'Silahkan login terlebih dahulu');
-    //   return;
-    // }
-    const formData = new FormData();
-    formData.append('name', data.name);
-    formData.append('no_ktp', data.no_ktp);
-    // formData.append('bank', data.bank);
-    formData.append('bank_id', data.bank);
-    formData.append('user_id', user.id);
-    formData.append('ktp', {
-      uri: data.ktp.uri,
-      type: data.ktp.type,
-      name: data.ktp.fileName,
-    });
-    formData.append('kk', {
-      uri: data.kk.uri,
-      type: data.kk.type,
-      name: data.kk.fileName,
-    });
-
     try {
       setIsLoading(true);
-      instance.defaults.headers['Content-Type'] = 'multipart/form-data';
+
+      const userString = await AsyncStorage.getItem('user');
+      const user = userString ? JSON.parse(userString) : null;
+
+      const formData = new FormData();
+      const appendIfExists = (key: string, value: any) => {
+        if (value) formData.append(key, value);
+      };
+
+      appendIfExists('name', data.name);
+      appendIfExists('no_ktp', data.no_ktp);
+      appendIfExists('bank_id', data.bank);
+      appendIfExists('user_id', user?.id);
+
+      // Handle image files
+      [
+        {key: 'ktp', image: data.ktp},
+        {key: 'kk', image: data.kk},
+      ].forEach(({key, image}) => {
+        if (image?.uri) {
+          formData.append(key, {
+            uri: image.uri,
+            type: image.type,
+            name: image.fileName,
+          });
+        }
+      });
+
       const response = await instance.post(
         'v1/prospective-customers',
         formData,
+        {
+          headers: {'Content-Type': 'multipart/form-data'},
+        },
       );
+
       if (response.data.status === 'success') {
         Alert.alert('Berhasil', 'Data berhasil disimpan', [
           {text: 'OK', onPress: () => navigation.navigate('Home')},
         ]);
-
         showNotification('Penagihan', 'Status penagihan berhasil ditambahkan');
       }
     } catch (error: any) {
@@ -117,7 +124,7 @@ function CalonNasabahScreen() {
     } finally {
       setIsLoading(false);
     }
-  }, [data]);
+  }, [data, navigation, showNotification]);
 
   return (
     <SafeAreaView style={globalStyles.container}>
