@@ -2,6 +2,7 @@ import useImagePicker from '@hooks/useImagePicker';
 import {useNotification} from '@hooks/useNotification';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import LoadingModal from '@src/components/LoadingModal';
+import {formatErrorMessage} from '@src/helpers/errror';
 import {DetailPenagihanData} from '@src/types/detailPenagihan';
 import globalStyles from '@styles/styles';
 import dayjs from 'dayjs';
@@ -90,13 +91,10 @@ function DetailPenagihanScreen({route}: DetailPenagihanScreenProps) {
         },
       }));
     } catch (error: any) {
-      if (error.response.data.status === 'error') {
-        Alert.alert(
-          'Gagal mengambil data penagihan',
-          error.response.data.message,
-        );
-      }
-      Alert.alert('Gagal mengambil data penagihan', `Gagal terjadi kesalahan.`);
+      console.log('Error fetching billing details:', error.response?.data);
+      const errorMessage = formatErrorMessage(error);
+      Alert.alert('Gagal memuat data', errorMessage);
+      navigation.goBack();
     }
   };
 
@@ -167,14 +165,9 @@ function DetailPenagihanScreen({route}: DetailPenagihanScreenProps) {
       );
       showNotification('Penagihan', 'Status penagihan berhasil ditambahkan');
     } catch (error: any) {
-      console.log(error.response.data);
-      if (error.response.data.status === 'error') {
-        Alert.alert(
-          'Penagihan Gagal',
-          `Gagal terjadi kesalahan karena:\n${error.response.data.message}`,
-        );
-      }
-      Alert.alert('Penagihan Gagal', `Gagal terjadi kesalahan.`);
+      console.log('Error:', error.response?.data);
+      const errorMessage = formatErrorMessage(error);
+      Alert.alert('Penagihan Gagal', errorMessage);
     } finally {
       setIsLoading(false);
     }
