@@ -101,7 +101,7 @@ function CutiScreen() {
     } catch (error: any) {
       console.log('Error:', error.response?.data);
       const errorMessage = formatErrorMessage(error);
-      Alert.alert('Data cuti gagal diajukan!', errorMessage);
+      Alert.alert('Data cuti gagal diajukan', errorMessage);
     } finally {
       setIsLoading(false);
     }
