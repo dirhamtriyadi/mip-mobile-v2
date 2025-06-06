@@ -61,12 +61,12 @@ export type SurveiFormData = {
   source_2_number_of_dependents: string;
   source_2_prospect_character: string;
   recommendation_pt: string;
-  descriptionSurvey: string;
-  locationSurvey: string;
-  dateSurvey: Dayjs;
+  description_survey: string;
+  location_survey: string;
+  date_survey: Dayjs;
   latitude: number;
   longitude: number;
-  locationString: string;
+  location_string: string;
   signature_officer: string | null;
   signature_customer: string | null;
   signature_couple: string | null;

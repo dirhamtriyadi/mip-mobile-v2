@@ -104,12 +104,12 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
     source_2_number_of_dependents: '',
     source_2_prospect_character: '',
     recommendation_pt: '',
-    descriptionSurvey: '',
-    locationSurvey: '',
-    dateSurvey: dayjs(),
+    description_survey: '',
+    location_survey: '',
+    date_survey: dayjs(),
     latitude: 0,
     longitude: 0,
-    locationString: '',
+    location_string: '',
     signature_officer: null,
     signature_customer: null,
     signature_couple: null,
@@ -131,7 +131,7 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const {location, getCurrentLocation, changeLocationMarker} = useLocation();
   const {date, openDatePicker, setOpenDatePicker, handleDateChange} =
-    useDatePicker(formDataSurvei.dateSurvey);
+    useDatePicker(formDataSurvei.date_survey);
   const {
     image: imageWorkplace1,
     handleClickOpenCamera: handleClickOpenCameraWorkplaceImage1,
@@ -197,10 +197,10 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
   useEffect(() => {
     setFormDataSurvei(prevData => ({
       ...prevData,
-      dateSurvey: date,
+      date_survey: date,
       latitude: location.latitude,
       longitude: location.longitude,
-      locationString: location.locationString,
+      location_string: location.location_string,
     }));
   }, [location, date]);
 
@@ -301,12 +301,12 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
           formDataSurvei.source_2_number_of_dependents,
         source_2_prospect_character: formDataSurvei.source_2_prospect_character,
         recommendation_pt: formDataSurvei.recommendation_pt,
-        descriptionSurvey: formDataSurvei.descriptionSurvey,
-        locationSurvey: formDataSurvei.locationSurvey,
-        dateSurvey: dayjs(formDataSurvei.dateSurvey).format('YYYY-MM-DD'),
+        description_survey: formDataSurvei.description_survey,
+        location_survey: formDataSurvei.location_survey,
+        date_survey: dayjs(formDataSurvei.date_survey).format('YYYY-MM-DD'),
         latitude: formDataSurvei.latitude,
         longitude: formDataSurvei.longitude,
-        locationString: formDataSurvei.locationString,
+        location_string: formDataSurvei.location_string,
       };
 
       // Menambahkan semua field ke FormData
@@ -1203,22 +1203,22 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
             <InputFieldTextArea
               label="Keterangan"
               placeholder="Masukan keterangan"
-              value={formDataSurvei.descriptionSurvey}
+              value={formDataSurvei.description_survey}
               onChangeText={text => {
                 setFormDataSurvei(prevData => ({
                   ...prevData,
-                  descriptionSurvey: text,
+                  description_survey: text,
                 }));
               }}
             />
             <InputField
               label="Tempat"
               placeholder="Masukan tempat"
-              value={formDataSurvei.locationSurvey}
+              value={formDataSurvei.location_survey}
               onChangeText={text => {
                 setFormDataSurvei(prevData => ({
                   ...prevData,
-                  locationSurvey: text,
+                  location_survey: text,
                 }));
               }}
             />
@@ -1226,8 +1226,8 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
               label="Tanggal"
               placeholder="Tanggal"
               value={
-                formDataSurvei.dateSurvey
-                  ? dayjs(formDataSurvei.dateSurvey).format('dddd, DD-MM-YYYY')
+                formDataSurvei.date_survey
+                  ? dayjs(formDataSurvei.date_survey).format('dddd, DD-MM-YYYY')
                   : dayjs().format('dddd, DD-MM-YYYY')
               }
               onChangeText={() => {}}
@@ -1403,8 +1403,8 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
         minimumDate={dayjs().hour(0).minute(0).second(0).toDate()}
         open={openDatePicker}
         date={
-          formDataSurvei.dateSurvey
-            ? dayjs(formDataSurvei.dateSurvey).toDate()
+          formDataSurvei.date_survey
+            ? dayjs(formDataSurvei.date_survey).toDate()
             : dayjs().toDate()
         }
         onConfirm={handleDateChange}

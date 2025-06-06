@@ -1,5 +1,5 @@
-import React, {useRef, useEffect} from 'react';
-import {View, Text, TextInput, TouchableOpacity} from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {Text, TextInput, TouchableOpacity, View} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import styles from './styles';
@@ -12,7 +12,7 @@ interface LocationPickerProps {
   location: {
     latitude: number;
     longitude: number;
-    locationString: string;
+    location_string: string;
   };
 }
 
@@ -44,13 +44,13 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
         <TextInput
           style={styles.textInput}
           placeholder={placeholder}
-          value={location.locationString}
+          value={location.location_string}
         />
         <TouchableOpacity style={styles.btnIcon} onPress={getCurrentLocation}>
           <Icon name="location-arrow" size={20} color="#000" />
         </TouchableOpacity>
       </View>
-      {location.locationString && (
+      {location.location_string && (
         <MapView
           ref={mapRef} // Add ref to the MapView
           style={styles.map}
@@ -69,7 +69,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
                 longitude: location.longitude,
               }}
               title="Lokasi Anda"
-              description={location.locationString}
+              description={location.location_string}
               onDragEnd={e => {
                 if (onDragMarker) {
                   // Check if onDragMarker is defined
@@ -87,7 +87,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
                 longitude: location.longitude,
               }}
               title="Lokasi Anda"
-              description={location.locationString}
+              description={location.location_string}
             />
           )}
         </MapView>

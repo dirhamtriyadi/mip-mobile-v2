@@ -1,18 +1,18 @@
-import {useState, useEffect} from 'react';
-import {PermissionsAndroid, Platform, Alert} from 'react-native';
+import {useEffect, useState} from 'react';
+import {Alert, PermissionsAndroid, Platform} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 
 interface LocationProps {
   latitude: number;
   longitude: number;
-  locationString: string;
+  location_string: string;
 }
 
 export const useLocation = () => {
   const [location, setLocation] = useState<LocationProps>({
     latitude: 0,
     longitude: 0,
-    locationString: '',
+    location_string: '',
   });
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export const useLocation = () => {
         setLocation({
           latitude,
           longitude,
-          locationString: `${latitude}, ${longitude}`,
+          location_string: `${latitude}, ${longitude}`,
         });
       },
       error => {
@@ -77,7 +77,7 @@ export const useLocation = () => {
     setLocation({
       latitude: latitude,
       longitude: longitude,
-      locationString: `${latitude}, ${longitude}`,
+      location_string: `${latitude}, ${longitude}`,
     });
     console.log(latitude, longitude);
     console.log(`${latitude}, ${longitude}`);

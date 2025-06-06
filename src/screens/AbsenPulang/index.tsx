@@ -55,7 +55,7 @@ function SakitScreen() {
         ...prevData,
         latitude: location.latitude,
         longitude: location.longitude,
-        location_check_out: location.locationString,
+        location_check_out: location.location_string,
       }));
     }
   }, [location]);

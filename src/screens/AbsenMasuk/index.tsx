@@ -73,7 +73,7 @@ function AbsenMasukScreen() {
         ...prevData,
         latitude: location.latitude,
         longitude: location.longitude,
-        location_check_in: location.locationString,
+        location_check_in: location.location_string,
       }));
     }
   }, [location]);
