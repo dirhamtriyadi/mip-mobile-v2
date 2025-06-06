@@ -112,10 +112,16 @@ function SakitScreen() {
 
       instance.defaults.headers['Content-Type'] = 'multipart/form-data';
       await instance.post('v1/attendances/sick', formData);
-      Alert.alert('Sukses', 'Absen sakit berhasil disubmit', [
-        {text: 'OK', onPress: () => navigation.navigate('Home')},
-      ]);
-      showNotification('Sukses', 'Absen sakit berhasil disubmit');
+
+      Alert.alert(
+        'Absen Sakit Berhasil',
+        'Data absen sakit Anda telah berhasil disimpan dan dikirim ke sistem',
+        [{text: 'OK', onPress: () => navigation.navigate('Home')}],
+      );
+      showNotification(
+        'Absen Sakit Berhasil',
+        'Data absen sakit Anda telah berhasil disimpan',
+      );
     } catch (error: any) {
       console.log('Error:', error.response?.data);
       const errorMessage = formatErrorMessage(error);
