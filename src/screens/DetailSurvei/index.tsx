@@ -13,6 +13,7 @@ import InputStatusPicker from '@src/components/InputStatusPicker';
 import LoadingModal from '@src/components/LoadingModal';
 import LocationPicker from '@src/components/LocationPicker';
 import instance from '@src/configs/axios';
+import {formatErrorMessage} from '@src/helpers/errror';
 import useDatePicker from '@src/hooks/useDatePicker';
 import useImagePicker from '@src/hooks/useImagePicker';
 import {useLocation} from '@src/hooks/useLocation';
@@ -373,19 +374,9 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
 
       showNotification('Penagihan', 'Status penagihan berhasil ditambahkan');
     } catch (error: any) {
-      console.log(error);
-      if (error.response?.data?.status === 'error') {
-        const errorMessages = Object.values(error.response?.data?.errors || {})
-          .flat()
-          .join(', ');
-        return Alert.alert('Error', errorMessages || 'Terjadi kesalahan.');
-      }
-
-      return Alert.alert(
-        'Error',
-        'Terjadi kesalahan saat prospective customer survey!',
-        [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-      );
+      console.log('Error:', error.response?.data);
+      const errorMessage = formatErrorMessage(error);
+      Alert.alert('Gagal upload data survei', errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -452,8 +443,9 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
           );
         });
     } catch (error: any) {
-      console.log(error);
-      Alert.alert('Error', error.message);
+      console.log('Error:', error.response?.data);
+      const errorMessage = formatErrorMessage(error);
+      Alert.alert('Gagal mengunduh file', errorMessage);
     }
   }, []);
 
@@ -498,8 +490,9 @@ function DetailSurveiScreen({route}: DetailSurveiScreenProps) {
       showNotification('Penagihan', 'Status penagihan berhasil ditambahkan');
       return navigation.navigate('Home');
     } catch (error: any) {
-      console.log(error);
-      Alert.alert('Error', error.message);
+      console.log('Error:', error.response?.data);
+      const errorMessage = formatErrorMessage(error);
+      Alert.alert('Gagal update status selesai', errorMessage);
     } finally {
       setIsLoading(false);
     }
