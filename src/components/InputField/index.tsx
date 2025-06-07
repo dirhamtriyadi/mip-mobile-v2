@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {Text, TextInput, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import styles from './styles';
 
@@ -11,6 +11,9 @@ interface InputFieldProps {
   editable?: boolean;
   onIconPress?: () => void;
   iconName?: string;
+  required?: boolean;
+  onBlur?: () => void;
+  error?: string;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -21,15 +24,29 @@ const InputField: React.FC<InputFieldProps> = ({
   editable = true,
   onIconPress,
   iconName,
+  required = false,
+  onBlur,
+  error,
 }) => (
   <View style={styles.groupField}>
-    {label && <Text style={styles.fieldLabel}>{label}</Text>}
-    <View style={styles.fieldInput}>
+    {label && (
+      <Text style={styles.fieldLabel}>
+        {label}
+        {required && <Text style={{color: 'red'}}> *</Text>}
+      </Text>
+    )}
+    <View
+      style={[
+        styles.fieldInput,
+        error && {borderColor: 'red', borderWidth: 1},
+      ]}>
       <TextInput
         style={{color: '#242c40'}}
         placeholder={placeholder}
+        placeholderTextColor="#999"
         value={value}
         onChangeText={onChangeText}
+        onBlur={onBlur}
         editable={editable}
       />
       {iconName && (
@@ -40,6 +57,9 @@ const InputField: React.FC<InputFieldProps> = ({
         </TouchableOpacity>
       )}
     </View>
+    {error && (
+      <Text style={{color: 'red', fontSize: 12, marginTop: 4}}>{error}</Text>
+    )}
   </View>
 );
 

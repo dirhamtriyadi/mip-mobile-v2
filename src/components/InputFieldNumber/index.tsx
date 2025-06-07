@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TextInput, TouchableOpacity} from 'react-native';
+import {Text, TextInput, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import styles from './styles';
 
@@ -7,10 +7,13 @@ interface InputFieldNumberProps {
   label: string;
   placeholder: string;
   value: string;
-  onChangeText: (text: string) => void;
+  onChangeText?: (text: string) => void;
   editable?: boolean;
   onIconPress?: () => void;
   iconName?: string;
+  required?: boolean;
+  onBlur?: () => void;
+  error?: string;
 }
 
 const InputFieldNumber: React.FC<InputFieldNumberProps> = ({
@@ -21,15 +24,29 @@ const InputFieldNumber: React.FC<InputFieldNumberProps> = ({
   editable = true,
   onIconPress,
   iconName,
+  required = false,
+  onBlur,
+  error,
 }) => (
-  <View style={[styles.groupField]}>
-    <Text style={[styles.fieldLabel]}>{label}</Text>
-    <View style={[styles.fieldInput]}>
+  <View style={styles.groupField}>
+    {label && (
+      <Text style={styles.fieldLabel}>
+        {label}
+        {required && <Text style={{color: 'red'}}> *</Text>}
+      </Text>
+    )}
+    <View
+      style={[
+        styles.fieldInput,
+        error && {borderColor: 'red', borderWidth: 1},
+      ]}>
       <TextInput
         style={{color: '#242c40'}}
         placeholder={placeholder}
-        value={value}
+        placeholderTextColor="#999"
+        value={value || ''}
         onChangeText={onChangeText}
+        onBlur={onBlur}
         editable={editable}
         keyboardType="numeric"
       />
@@ -41,6 +58,9 @@ const InputFieldNumber: React.FC<InputFieldNumberProps> = ({
         </TouchableOpacity>
       )}
     </View>
+    {error && (
+      <Text style={{color: 'red', fontSize: 12, marginTop: 4}}>{error}</Text>
+    )}
   </View>
 );
 

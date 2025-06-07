@@ -1,90 +1,140 @@
 import Button from '@src/components/Button';
-import ImagePicker from '@src/components/ImagePicker';
+import ImagePickerField from '@src/components/ImagePickerV1';
 import InputField from '@src/components/InputField';
 import InputFieldNumber from '@src/components/InputFieldNumber';
 import InputSelectPicker from '@src/components/InputSelectPicker';
+import {CalonNasabahCreateSchema} from '@src/schema';
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  UseFormSetValue,
+} from 'react-hook-form';
 
 interface FormCalonNasabahProps {
-  data: any;
-  banks?: {label: string; value: string}[];
-  onDataChange: (data: any) => void;
-  imageKtp: any;
-  imageKk: any;
-  loading?: boolean;
+  control: Control<CalonNasabahCreateSchema>;
+  errors: FieldErrors<CalonNasabahCreateSchema>;
+  setValue: UseFormSetValue<CalonNasabahCreateSchema>;
+  isValid: boolean;
+  isSubmitting: boolean;
+  watchedValues: CalonNasabahCreateSchema;
+  banks: {label: string; value: string}[];
+  loading: boolean;
+  onSubmit: () => void;
+  imageKtp: string | null;
+  imageKk: string | null;
   handleClickOpenCameraKtp: () => void;
-  handleClickOpenCameraKk: () => void;
-  handleImageSelectKtp: () => void;
-  handleImageSelectKk: () => void;
+  handleImageSelectKtp: (image: string) => void;
   handleClickResetKtp: () => void;
+  handleClickOpenCameraKk: () => void;
+  handleImageSelectKk: (image: string) => void;
   handleClickResetKk: () => void;
-  handleSubmit: () => void;
 }
 
 function FormCalonNasabah({
-  data,
+  control,
+  errors,
+  setValue,
+  isValid,
+  isSubmitting,
+  watchedValues,
   banks,
-  onDataChange,
+  loading,
+  onSubmit: handleSubmit,
   imageKtp,
   imageKk,
-  loading = false,
   handleClickOpenCameraKtp,
-  handleClickOpenCameraKk,
   handleImageSelectKtp,
-  handleImageSelectKk,
   handleClickResetKtp,
+  handleClickOpenCameraKk,
+  handleImageSelectKk,
   handleClickResetKk,
-  handleSubmit,
 }: FormCalonNasabahProps) {
+  console.log(errors);
+
   return (
     <>
-      <InputField
-        label="Nama Calon Nasabah"
-        placeholder="Masukan Nama Calon Nasabah"
-        value={data.name}
-        onChangeText={(value: string) => {
-          onDataChange((prevData: any) => ({
-            ...prevData,
-            name: value,
-          }));
-        }}
+      <Controller
+        control={control}
+        name="name"
+        render={({field: {onChange, onBlur, value}}) => (
+          <InputField
+            label="Nama Calon Nasabah"
+            placeholder="Masukan Nama Calon Nasabah"
+            value={value}
+            onChangeText={(text: string) => {
+              onChange(text);
+            }}
+            onBlur={onBlur}
+            error={errors.name?.message}
+            required
+          />
+        )}
       />
-      <InputFieldNumber
-        label="No KTP"
-        placeholder="Masukan No KTP"
-        value={data.no_ktp}
-        onChangeText={(value: string) => {
-          // only allow numbers
-          value = value.replace(/[^0-9]/g, '');
-          onDataChange((prevData: any) => ({
-            ...prevData,
-            no_ktp: value,
-          }));
-        }}
+      <Controller
+        control={control}
+        name="no_ktp"
+        render={({field: {onChange, onBlur, value}}) => (
+          <InputFieldNumber
+            label="Nomor KTP"
+            placeholder="Masukan Nomor KTP"
+            value={value?.toString() || ''}
+            onChangeText={(text: string) => {
+              onChange(text);
+            }}
+            onBlur={onBlur}
+            error={errors.no_ktp?.message}
+            required
+          />
+        )}
       />
-      <InputSelectPicker
-        label="Pilih Bank"
-        value={data.bank}
-        onChange={(value: string) => {
-          onDataChange((prevData: any) => ({
-            ...prevData,
-            bank: value,
-          }));
-        }}
-        options={banks || []}
+      <Controller
+        control={control}
+        name="bank_id"
+        render={({field: {onChange, value}}) => (
+          <InputSelectPicker
+            label="Pilih Bank"
+            value={value?.toString() || ''}
+            onChange={(selectedValue: string) => {
+              onChange(selectedValue);
+            }}
+            options={banks || []}
+            error={errors.bank_id?.message}
+            required
+          />
+        )}
       />
-      <ImagePicker
-        image={imageKtp}
-        label="Ktp"
-        onImageSelected={handleImageSelectKtp}
-        onOpenCamera={handleClickOpenCameraKtp}
-        onResetImage={handleClickResetKtp}
+      <Controller
+        control={control}
+        name="ktp"
+        render={({field: {onChange, value}}) => (
+          <ImagePickerField
+            label="Foto KTP"
+            value={value || null}
+            onImageChange={onChange}
+            placeholder="Ambil atau pilih foto KTP"
+            required
+            error={errors.ktp?.message}
+            maxSizeInMB={2}
+            allowedTypes={['image/jpeg', 'image/jpg', 'image/png']}
+          />
+        )}
       />
-      <ImagePicker
-        image={imageKk}
-        label="Kartu Keluarga"
-        onImageSelected={handleImageSelectKk}
-        onOpenCamera={handleClickOpenCameraKk}
-        onResetImage={handleClickResetKk}
+      <Controller
+        control={control}
+        name="kk"
+        render={({field: {onChange, value}}) => (
+          <ImagePickerField
+            label="Foto Kartu Keluarga"
+            value={value || null}
+            onImageChange={onChange}
+            placeholder="Ambil atau pilih foto KK"
+            required
+            error={errors.kk?.message}
+            maxSizeInMB={2}
+            allowedTypes={['image/jpeg', 'image/jpg', 'image/png']}
+          />
+        )}
       />
       <Button disabled={loading} label="Simpan" onPress={handleSubmit} />
     </>
