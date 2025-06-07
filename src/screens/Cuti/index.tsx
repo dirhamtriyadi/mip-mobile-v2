@@ -65,6 +65,9 @@ function CutiScreen() {
     } catch (error: any) {
       console.log('Error:', error.response?.data);
       const errorMessage = formatErrorMessage(error);
+      if (error.response?.status === 404) {
+        return;
+      }
       Alert.alert('Gagal mengambil data cuti', errorMessage);
     } finally {
       setIsLoading(false);
