@@ -14,6 +14,7 @@ interface InputFieldProps {
   required?: boolean;
   onBlur?: () => void;
   error?: string;
+  secureTextEntry?: boolean;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -27,6 +28,7 @@ const InputField: React.FC<InputFieldProps> = ({
   required = false,
   onBlur,
   error,
+  secureTextEntry = false,
 }) => (
   <View style={styles.groupField}>
     {label && (
@@ -48,6 +50,7 @@ const InputField: React.FC<InputFieldProps> = ({
         onChangeText={onChangeText}
         onBlur={onBlur}
         editable={editable}
+        secureTextEntry={secureTextEntry}
       />
       {iconName && (
         <TouchableOpacity
