@@ -4,11 +4,9 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import LoadingModal from '@src/components/LoadingModal';
 import instance from '@src/configs/axios';
 import {formatErrorMessage} from '@src/helpers/errror';
-import useImagePicker from '@src/hooks/useImagePicker';
 import {useNotification} from '@src/hooks/useNotification';
 import {calonNasabahCreateSchema, CalonNasabahCreateSchema} from '@src/schema';
 import globalStyles from '@src/styles/styles';
-import {CalonNasabahFormData} from '@src/types/calonNasabah';
 import {RootStackParamList} from 'App';
 import {useCallback, useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
@@ -18,19 +16,6 @@ import FormCalonNasabah from './form';
 function CalonNasabahScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const {showNotification} = useNotification();
-  const {
-    image: imageKtp,
-    handleClickOpenCamera: handleClickOpenCameraKtp,
-    handleImageSelect: handleImageSelectKtp,
-    handleClickReset: handleClickResetKtp,
-  } = useImagePicker();
-
-  const {
-    image: imageKk,
-    handleClickOpenCamera: handleClickOpenCameraKk,
-    handleImageSelect: handleImageSelectKk,
-    handleClickReset: handleClickResetKk,
-  } = useImagePicker();
 
   const form = useForm<CalonNasabahCreateSchema>({
     resolver: zodResolver(calonNasabahCreateSchema),
@@ -55,13 +40,6 @@ function CalonNasabahScreen() {
     formState: {errors, isValid, isSubmitting},
   } = form;
 
-  const [data, setData] = useState<CalonNasabahFormData>({
-    name: '',
-    no_ktp: '',
-    bank: '',
-    ktp: '',
-    kk: '',
-  });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [banks, setBanks] = useState<{label: string; value: string}[]>([]);
 
@@ -89,14 +67,6 @@ function CalonNasabahScreen() {
   useEffect(() => {
     fetchBankList();
   }, [fetchBankList]);
-
-  useEffect(() => {
-    setData(prevData => ({
-      ...prevData,
-      ktp: imageKtp,
-      kk: imageKk,
-    }));
-  }, [imageKtp, imageKk]);
 
   const handleSubmit = useCallback(
     async (data: CalonNasabahCreateSchema) => {
@@ -151,7 +121,7 @@ function CalonNasabahScreen() {
         setIsLoading(false);
       }
     },
-    [imageKtp, imageKk, navigation, showNotification],
+    [navigation, showNotification],
   );
 
   return (
@@ -169,21 +139,6 @@ function CalonNasabahScreen() {
             onSubmit={handleSubmitForm(handleSubmit)}
             watchedValues={watch()}
           />
-          {/* <FormCalonNasabah
-            loading={isLoading}
-            data={data}
-            banks={banks}
-            onDataChange={setData}
-            imageKtp={imageKtp}
-            imageKk={imageKk}
-            handleClickOpenCameraKtp={handleClickOpenCameraKtp}
-            handleClickOpenCameraKk={handleClickOpenCameraKk}
-            handleImageSelectKtp={handleImageSelectKtp}
-            handleImageSelectKk={handleImageSelectKk}
-            handleClickResetKtp={handleClickResetKtp}
-            handleClickResetKk={handleClickResetKk}
-            handleSubmit={handleSubmit}
-          /> */}
         </View>
       </ScrollView>
       <LoadingModal visible={isLoading} />
