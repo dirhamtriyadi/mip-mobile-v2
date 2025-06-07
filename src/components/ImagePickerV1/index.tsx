@@ -100,15 +100,20 @@ const ImagePickerField: React.FC<ImagePickerFieldProps> = ({
     try {
       const galleryPermission = Platform.select({
         android:
-          Number(Platform.Version) >= 33
+          // ✅ Fix: Better Android permission handling
+          (Platform.Version as number) >= 33
             ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
             : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
         ios: PERMISSIONS.IOS.PHOTO_LIBRARY,
       });
 
-      if (!galleryPermission) return true; // Some platforms don't need permission
+      if (!galleryPermission) {
+        console.log('No permission required for this platform');
+        return true;
+      } // Some platforms don't need permission
 
       const result = await check(galleryPermission);
+      console.log('Gallery permission result:', result);
 
       if (result === RESULTS.GRANTED) {
         return true;
@@ -129,6 +134,9 @@ const ImagePickerField: React.FC<ImagePickerFieldProps> = ({
               text: 'Buka Pengaturan',
               onPress: () => {
                 /* Open settings */
+                import('react-native').then(({Linking}) => {
+                  Linking.openSettings();
+                });
               },
             },
           ],
@@ -146,20 +154,51 @@ const ImagePickerField: React.FC<ImagePickerFieldProps> = ({
   // ===== IMAGE PROCESSING =====
   const processImageResponse = useCallback(
     (response: ImagePickerResponse): ImageFile | null => {
-      if (
-        response.didCancel ||
-        response.errorMessage ||
-        !response.assets?.[0]
-      ) {
+      console.log('Processing image response:', {
+        didCancel: response.didCancel,
+        errorMessage: response.errorMessage,
+        assetsCount: response.assets?.length,
+      }); // ✅ Debug
+
+      if (response.didCancel) {
+        console.log('User cancelled image selection');
+        return null;
+      }
+
+      if (response.errorMessage) {
+        console.error('Image picker error:', response.errorMessage);
+        Alert.alert('Error', response.errorMessage);
+        return null;
+      }
+
+      if (!response.assets?.[0]) {
+        console.log('No assets in response');
+        Alert.alert('Error', 'Tidak ada gambar yang dipilih');
         return null;
       }
 
       const asset = response.assets[0];
+      console.log('Asset details:', {
+        uri: asset.uri ? 'present' : 'missing',
+        type: asset.type,
+        fileName: asset.fileName,
+        fileSize: asset.fileSize,
+      }); // ✅ Debug
 
-      if (!asset.uri || !asset.type || !asset.fileName) {
-        Alert.alert('Error', 'File yang dipilih tidak valid');
+      if (!asset.uri) {
+        console.error('Asset URI missing');
+        Alert.alert('Error', 'URI gambar tidak valid');
         return null;
       }
+
+      if (!asset.type) {
+        console.error('Asset type missing');
+        Alert.alert('Error', 'Tipe file tidak valid');
+        return null;
+      }
+
+      // ✅ Generate fileName if missing
+      const fileName = asset.fileName || `image_${Date.now()}.jpg`;
 
       // Validate file size
       const fileSizeInMB = (asset.fileSize || 0) / (1024 * 1024);
@@ -182,12 +221,15 @@ const ImagePickerField: React.FC<ImagePickerFieldProps> = ({
         return null;
       }
 
-      return {
+      const result = {
         uri: asset.uri,
         type: asset.type,
-        fileName: asset.fileName,
+        fileName,
         fileSize: asset.fileSize || 0,
       };
+
+      console.log('Successfully processed image:', result); // ✅ Debug
+      return result;
     },
     [maxSizeInMB, allowedTypes],
   );
@@ -203,6 +245,8 @@ const ImagePickerField: React.FC<ImagePickerFieldProps> = ({
       maxWidth: 1024,
       maxHeight: 1024,
       includeBase64: false,
+      // ✅ Add these options
+      presentationStyle: 'pageSheet', // iOS only
     };
 
     launchCamera(options, response => {
@@ -215,18 +259,49 @@ const ImagePickerField: React.FC<ImagePickerFieldProps> = ({
 
   // ===== GALLERY HANDLER =====
   const handleSelectFromGallery = useCallback(async () => {
+    console.log('Starting gallery selection...'); // ✅ Debug
     const hasPermission = await requestGalleryPermission();
-    if (!hasPermission) return;
+    console.log('Gallery permission granted:', hasPermission); // ✅ Debug
+    if (!hasPermission) {
+      console.log('Gallery permission denied, aborting...'); // ✅ Debug
+      return;
+    }
 
     const options: ImageLibraryOptions = {
       mediaType: 'photo' as MediaType,
       //   quality: quality,
+      quality: 0.8,
       maxWidth: 1024,
       maxHeight: 1024,
       includeBase64: false,
     };
 
     launchImageLibrary(options, response => {
+      console.log('Gallery response:', {
+        didCancel: response.didCancel,
+        errorCode: response.errorCode,
+        errorMessage: response.errorMessage,
+        assets: response.assets?.length,
+      }); // ✅ Debug
+
+      // ✅ Enhanced error handling
+      if (response.didCancel) {
+        console.log('User cancelled gallery selection');
+        return;
+      }
+
+      if (response.errorMessage) {
+        console.error('Gallery error:', response.errorMessage);
+        Alert.alert('Error', `Gagal membuka galeri: ${response.errorMessage}`);
+        return;
+      }
+
+      if (!response.assets || response.assets.length === 0) {
+        console.log('No assets returned from gallery');
+        Alert.alert('Error', 'Tidak ada gambar yang dipilih');
+        return;
+      }
+
       const processedImage = processImageResponse(response);
       if (processedImage) {
         onImageChange(processedImage);
