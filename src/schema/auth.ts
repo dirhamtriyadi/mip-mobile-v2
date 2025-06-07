@@ -2,11 +2,11 @@ import {z} from 'zod';
 
 export const loginSchema = z.object({
   email: z
-    .string({required_error: 'Email is required'})
-    .email({message: 'Invalid email'}),
+    .string({required_error: 'Email wajib diisi'})
+    .email({message: 'Email tidak valid'}),
   password: z
-    .string({required_error: 'Password is required'})
-    .min(4, {message: 'Password must be at least 4 characters long'}),
+    .string({required_error: 'Password wajib diisi'})
+    .min(4, {message: 'Password minimal 4 karakter'}),
 });
 
 export type LoginSchemaType = z.infer<typeof loginSchema>;
