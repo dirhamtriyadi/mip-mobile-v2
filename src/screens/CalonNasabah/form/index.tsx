@@ -21,14 +21,6 @@ interface FormCalonNasabahProps {
   banks: {label: string; value: string}[];
   loading: boolean;
   onSubmit: () => void;
-  imageKtp: string | null;
-  imageKk: string | null;
-  handleClickOpenCameraKtp: () => void;
-  handleImageSelectKtp: (image: string) => void;
-  handleClickResetKtp: () => void;
-  handleClickOpenCameraKk: () => void;
-  handleImageSelectKk: (image: string) => void;
-  handleClickResetKk: () => void;
 }
 
 function FormCalonNasabah({
@@ -41,14 +33,6 @@ function FormCalonNasabah({
   banks,
   loading,
   onSubmit: handleSubmit,
-  imageKtp,
-  imageKk,
-  handleClickOpenCameraKtp,
-  handleImageSelectKtp,
-  handleClickResetKtp,
-  handleClickOpenCameraKk,
-  handleImageSelectKk,
-  handleClickResetKk,
 }: FormCalonNasabahProps) {
   console.log(errors);
 
@@ -91,13 +75,14 @@ function FormCalonNasabah({
       <Controller
         control={control}
         name="bank_id"
-        render={({field: {onChange, value}}) => (
+        render={({field: {onChange, onBlur, value}}) => (
           <InputSelectPicker
             label="Pilih Bank"
             value={value?.toString() || ''}
             onChange={(selectedValue: string) => {
               onChange(selectedValue);
             }}
+            onBlur={onBlur}
             options={banks || []}
             error={errors.bank_id?.message}
             required
@@ -107,11 +92,12 @@ function FormCalonNasabah({
       <Controller
         control={control}
         name="ktp"
-        render={({field: {onChange, value}}) => (
+        render={({field: {onChange, onBlur, value}}) => (
           <ImagePickerField
             label="Foto KTP"
             value={value || null}
             onImageChange={onChange}
+            onBlur={onBlur}
             placeholder="Ambil atau pilih foto KTP"
             required
             error={errors.ktp?.message}
@@ -123,11 +109,12 @@ function FormCalonNasabah({
       <Controller
         control={control}
         name="kk"
-        render={({field: {onChange, value}}) => (
+        render={({field: {onChange, onBlur, value}}) => (
           <ImagePickerField
             label="Foto Kartu Keluarga"
             value={value || null}
             onImageChange={onChange}
+            onBlur={onBlur}
             placeholder="Ambil atau pilih foto KK"
             required
             error={errors.kk?.message}

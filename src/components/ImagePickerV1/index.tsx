@@ -30,6 +30,7 @@ interface ImagePickerFieldProps {
   label: string;
   value?: ImageFile | null;
   onImageChange: (image: ImageFile | null) => void;
+  onBlur?: () => void; // Optional onBlur handler
   placeholder?: string;
   required?: boolean;
   error?: string;
@@ -43,6 +44,7 @@ const ImagePickerField: React.FC<ImagePickerFieldProps> = ({
   label,
   value,
   onImageChange,
+  onBlur = () => {}, // Default to no-op if not provided
   placeholder = 'Pilih atau ambil foto',
   required = false,
   error,
@@ -368,7 +370,8 @@ const ImagePickerField: React.FC<ImagePickerFieldProps> = ({
             disabled && styles.pickerButtonDisabled,
           ]}
           onPress={showImagePickerOptions}
-          disabled={disabled}>
+          disabled={disabled}
+          onBlur={onBlur}>
           <Icon
             name="add-a-photo"
             size={48}

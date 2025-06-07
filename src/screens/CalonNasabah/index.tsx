@@ -168,14 +168,6 @@ function CalonNasabahScreen() {
             loading={isLoading}
             onSubmit={handleSubmitForm(handleSubmit)}
             watchedValues={watch()}
-            imageKtp={imageKtp}
-            imageKk={imageKk}
-            handleClickOpenCameraKtp={handleClickOpenCameraKtp}
-            handleClickOpenCameraKk={handleClickOpenCameraKk}
-            handleImageSelectKtp={handleImageSelectKtp}
-            handleImageSelectKk={handleImageSelectKk}
-            handleClickResetKtp={handleClickResetKtp}
-            handleClickResetKk={handleClickResetKk}
           />
           {/* <FormCalonNasabah
             loading={isLoading}
