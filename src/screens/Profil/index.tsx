@@ -13,14 +13,7 @@ import {
 import globalStyles from '@styles/styles';
 import React, {useEffect, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {
-  ActivityIndicator,
-  Alert,
-  SafeAreaView,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import {ActivityIndicator, Alert, SafeAreaView, Text, View} from 'react-native';
 import instance from '../../configs/axios';
 import styles from './styles';
 
@@ -142,141 +135,47 @@ function ProfilScreen() {
             control={controlProfil}
             name="name"
             render={({field: {onChange, onBlur, value}}) => (
-              <View style={{width: '100%'}}>
-                <Text
-                  style={[
-                    {fontSize: 16, marginBottom: 10, fontWeight: 'bold'},
-                    errorsProfil.name && {color: 'red'},
-                  ]}>
-                  Nama
-                </Text>
-                <TextInput
-                  placeholderTextColor={errorsProfil.name ? 'red' : 'black'}
-                  placeholder="Nama"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  style={[
-                    {
-                      color: 'black',
-                      width: '100%',
-                      height: 45,
-                      borderWidth: 1,
-                      borderColor: '#ccc',
-                      borderRadius: 5,
-                      marginBottom: 15,
-                      paddingHorizontal: 10,
-                      justifyContent: 'center',
-                      backgroundColor: '#fff',
-                    },
-                    errorsProfil.name && {borderColor: 'red', color: 'red'},
-                  ]}
-                  autoCorrect={false}
-                  value={value}
-                />
-              </View>
+              <InputField
+                label="Nama Lengkap"
+                placeholder="Masukan Nama Lengkap"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                error={errorsProfil.name?.message}
+                required
+              />
             )}
           />
-          {errorsProfil.name && (
-            <Text
-              style={{
-                color: 'red',
-                marginTop: -10,
-                marginBottom: 10,
-                width: '100%',
-              }}>
-              {errorsProfil.name.message}
-            </Text>
-          )}
 
           <Controller
             control={controlProfil}
             name="email"
             render={({field: {onChange, onBlur, value}}) => (
-              <View style={{width: '100%'}}>
-                <Text
-                  style={[
-                    {fontSize: 16, marginBottom: 10, fontWeight: 'bold'},
-                    errorsProfil.email && {color: 'red'},
-                  ]}>
-                  Email
-                </Text>
-                <TextInput
-                  placeholderTextColor={errorsProfil.email ? 'red' : 'black'}
-                  placeholder="Email"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  style={[
-                    {
-                      color: 'black',
-                      width: '100%',
-                      height: 45,
-                      borderWidth: 1,
-                      borderColor: '#ccc',
-                      borderRadius: 5,
-                      marginBottom: 15,
-                      paddingHorizontal: 10,
-                      justifyContent: 'center',
-                      backgroundColor: '#fff',
-                    },
-                    errorsProfil.email && {borderColor: 'red', color: 'red'},
-                  ]}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  value={value}
-                />
-              </View>
+              <InputField
+                label="Email"
+                placeholder="Masukan Email"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                error={errorsProfil.email?.message}
+                required
+              />
             )}
           />
-          {errorsProfil.email && (
-            <Text
-              style={{
-                color: 'red',
-                marginTop: -10,
-                marginBottom: 10,
-                width: '100%',
-              }}>
-              {errorsProfil.email.message}
-            </Text>
-          )}
 
           <Controller
             control={controlProfil}
             name="nik"
             render={({field: {onChange, onBlur, value}}) => (
-              <View style={{width: '100%'}}>
-                <Text
-                  style={[
-                    {fontSize: 16, marginBottom: 10, fontWeight: 'bold'},
-                    errorsProfil.nik && {color: 'red'},
-                  ]}>
-                  NIK
-                </Text>
-                <TextInput
-                  placeholderTextColor={errorsProfil.nik ? 'red' : 'black'}
-                  placeholder="NIK"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  style={[
-                    {
-                      color: 'black',
-                      width: '100%',
-                      height: 45,
-                      borderWidth: 1,
-                      borderColor: '#ccc',
-                      borderRadius: 5,
-                      marginBottom: 15,
-                      paddingHorizontal: 10,
-                      justifyContent: 'center',
-                      backgroundColor: '#fff',
-                    },
-                    errorsProfil.nik && {borderColor: 'red', color: 'red'},
-                  ]}
-                  keyboardType="numeric"
-                  autoCorrect={false}
-                  value={value}
-                />
-              </View>
+              <InputField
+                label="NIK"
+                placeholder="Masukan NIK"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                error={errorsProfil.nik?.message}
+                required
+              />
             )}
           />
           {errorsProfil.nik && (
