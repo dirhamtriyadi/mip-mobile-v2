@@ -16,8 +16,6 @@ import {Controller, useForm} from 'react-hook-form';
 import {
   ActivityIndicator,
   Alert,
-  KeyboardAvoidingView,
-  Platform,
   SafeAreaView,
   Text,
   TextInput,
@@ -135,223 +133,214 @@ function ProfilScreen() {
 
   return (
     <SafeAreaView style={globalStyles.container}>
-      <KeyboardAvoidingView
-        style={{flex: 1}}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
-        <RefreshableScrollView
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{paddingBottom: 100}}>
-          <View style={styles.formGroup}>
-            <Text style={styles.title}>Edit Profil</Text>
-          </View>
-          <View style={styles.formGroup}>
-            <Controller
-              control={controlProfil}
-              name="name"
-              render={({field: {onChange, onBlur, value}}) => (
-                <View style={{width: '100%'}}>
-                  <Text
-                    style={[
-                      {fontSize: 16, marginBottom: 10, fontWeight: 'bold'},
-                      errorsProfil.name && {color: 'red'},
-                    ]}>
-                    Nama
-                  </Text>
-                  <TextInput
-                    placeholderTextColor={errorsProfil.name ? 'red' : 'black'}
-                    placeholder="Nama"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    style={[
-                      {
-                        color: 'black',
-                        width: '100%',
-                        height: 45,
-                        borderWidth: 1,
-                        borderColor: '#ccc',
-                        borderRadius: 5,
-                        marginBottom: 15,
-                        paddingHorizontal: 10,
-                        justifyContent: 'center',
-                        backgroundColor: '#fff',
-                      },
-                      errorsProfil.name && {borderColor: 'red', color: 'red'},
-                    ]}
-                    autoCorrect={false}
-                    value={value}
-                  />
-                </View>
-              )}
-            />
-            {errorsProfil.name && (
-              <Text
-                style={{
-                  color: 'red',
-                  marginTop: -10,
-                  marginBottom: 10,
-                  width: '100%',
-                }}>
-                {errorsProfil.name.message}
-              </Text>
-            )}
-
-            <Controller
-              control={controlProfil}
-              name="email"
-              render={({field: {onChange, onBlur, value}}) => (
-                <View style={{width: '100%'}}>
-                  <Text
-                    style={[
-                      {fontSize: 16, marginBottom: 10, fontWeight: 'bold'},
-                      errorsProfil.email && {color: 'red'},
-                    ]}>
-                    Email
-                  </Text>
-                  <TextInput
-                    placeholderTextColor={errorsProfil.email ? 'red' : 'black'}
-                    placeholder="Email"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    style={[
-                      {
-                        color: 'black',
-                        width: '100%',
-                        height: 45,
-                        borderWidth: 1,
-                        borderColor: '#ccc',
-                        borderRadius: 5,
-                        marginBottom: 15,
-                        paddingHorizontal: 10,
-                        justifyContent: 'center',
-                        backgroundColor: '#fff',
-                      },
-                      errorsProfil.email && {borderColor: 'red', color: 'red'},
-                    ]}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    value={value}
-                  />
-                </View>
-              )}
-            />
-            {errorsProfil.email && (
-              <Text
-                style={{
-                  color: 'red',
-                  marginTop: -10,
-                  marginBottom: 10,
-                  width: '100%',
-                }}>
-                {errorsProfil.email.message}
-              </Text>
-            )}
-
-            <Controller
-              control={controlProfil}
-              name="nik"
-              render={({field: {onChange, onBlur, value}}) => (
-                <View style={{width: '100%'}}>
-                  <Text
-                    style={[
-                      {fontSize: 16, marginBottom: 10, fontWeight: 'bold'},
-                      errorsProfil.nik && {color: 'red'},
-                    ]}>
-                    NIK
-                  </Text>
-                  <TextInput
-                    placeholderTextColor={errorsProfil.nik ? 'red' : 'black'}
-                    placeholder="NIK"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    style={[
-                      {
-                        color: 'black',
-                        width: '100%',
-                        height: 45,
-                        borderWidth: 1,
-                        borderColor: '#ccc',
-                        borderRadius: 5,
-                        marginBottom: 15,
-                        paddingHorizontal: 10,
-                        justifyContent: 'center',
-                        backgroundColor: '#fff',
-                      },
-                      errorsProfil.nik && {borderColor: 'red', color: 'red'},
-                    ]}
-                    keyboardType="numeric"
-                    autoCorrect={false}
-                    value={value}
-                  />
-                </View>
-              )}
-            />
-            {errorsProfil.nik && (
-              <Text
-                style={{
-                  color: 'red',
-                  marginTop: -10,
-                  marginBottom: 10,
-                  width: '100%',
-                }}>
-                {errorsProfil.nik.message}
-              </Text>
-            )}
-
-            <Button
-              label="Simpan"
-              onPress={handleSubmitProfil(handleSaveProfil)}
-            />
-          </View>
-          <View style={styles.formGroup}>
-            <Text style={styles.title}>Edit Password</Text>
-          </View>
-          <View style={styles.formGroup}>
-            <Controller
-              control={controlPassword}
-              name="password"
-              render={({field: {onChange, onBlur, value}}) => (
-                <InputField
-                  label="Password Baru"
-                  placeholder="Masukan Password Baru"
-                  value={value}
-                  onChangeText={onChange}
+      <RefreshableScrollView refreshing={refreshing} onRefresh={onRefresh}>
+        <View style={styles.formGroup}>
+          <Text style={styles.title}>Edit Profil</Text>
+        </View>
+        <View style={styles.formGroup}>
+          <Controller
+            control={controlProfil}
+            name="name"
+            render={({field: {onChange, onBlur, value}}) => (
+              <View style={{width: '100%'}}>
+                <Text
+                  style={[
+                    {fontSize: 16, marginBottom: 10, fontWeight: 'bold'},
+                    errorsProfil.name && {color: 'red'},
+                  ]}>
+                  Nama
+                </Text>
+                <TextInput
+                  placeholderTextColor={errorsProfil.name ? 'red' : 'black'}
+                  placeholder="Nama"
                   onBlur={onBlur}
-                  error={errorsPassword.password?.message}
-                  secureTextEntry
-                  required
-                />
-              )}
-            />
-
-            <Controller
-              control={controlPassword}
-              name="confirm_password"
-              render={({field: {onChange, onBlur, value}}) => (
-                <InputField
-                  label="Konfirmasi Password"
-                  placeholder="Masukan Konfirmasi Password"
-                  value={value}
                   onChangeText={onChange}
-                  onBlur={onBlur}
-                  error={errorsPassword.confirm_password?.message}
-                  secureTextEntry
-                  required
+                  style={[
+                    {
+                      color: 'black',
+                      width: '100%',
+                      height: 45,
+                      borderWidth: 1,
+                      borderColor: '#ccc',
+                      borderRadius: 5,
+                      marginBottom: 15,
+                      paddingHorizontal: 10,
+                      justifyContent: 'center',
+                      backgroundColor: '#fff',
+                    },
+                    errorsProfil.name && {borderColor: 'red', color: 'red'},
+                  ]}
+                  autoCorrect={false}
+                  value={value}
                 />
-              )}
-            />
+              </View>
+            )}
+          />
+          {errorsProfil.name && (
+            <Text
+              style={{
+                color: 'red',
+                marginTop: -10,
+                marginBottom: 10,
+                width: '100%',
+              }}>
+              {errorsProfil.name.message}
+            </Text>
+          )}
 
-            <Button
-              disabled={isLoading}
-              label="Simpan"
-              onPress={handleSubmitPassword(handleSavePassword)}
-            />
-          </View>
-        </RefreshableScrollView>
-      </KeyboardAvoidingView>
+          <Controller
+            control={controlProfil}
+            name="email"
+            render={({field: {onChange, onBlur, value}}) => (
+              <View style={{width: '100%'}}>
+                <Text
+                  style={[
+                    {fontSize: 16, marginBottom: 10, fontWeight: 'bold'},
+                    errorsProfil.email && {color: 'red'},
+                  ]}>
+                  Email
+                </Text>
+                <TextInput
+                  placeholderTextColor={errorsProfil.email ? 'red' : 'black'}
+                  placeholder="Email"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  style={[
+                    {
+                      color: 'black',
+                      width: '100%',
+                      height: 45,
+                      borderWidth: 1,
+                      borderColor: '#ccc',
+                      borderRadius: 5,
+                      marginBottom: 15,
+                      paddingHorizontal: 10,
+                      justifyContent: 'center',
+                      backgroundColor: '#fff',
+                    },
+                    errorsProfil.email && {borderColor: 'red', color: 'red'},
+                  ]}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  value={value}
+                />
+              </View>
+            )}
+          />
+          {errorsProfil.email && (
+            <Text
+              style={{
+                color: 'red',
+                marginTop: -10,
+                marginBottom: 10,
+                width: '100%',
+              }}>
+              {errorsProfil.email.message}
+            </Text>
+          )}
+
+          <Controller
+            control={controlProfil}
+            name="nik"
+            render={({field: {onChange, onBlur, value}}) => (
+              <View style={{width: '100%'}}>
+                <Text
+                  style={[
+                    {fontSize: 16, marginBottom: 10, fontWeight: 'bold'},
+                    errorsProfil.nik && {color: 'red'},
+                  ]}>
+                  NIK
+                </Text>
+                <TextInput
+                  placeholderTextColor={errorsProfil.nik ? 'red' : 'black'}
+                  placeholder="NIK"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  style={[
+                    {
+                      color: 'black',
+                      width: '100%',
+                      height: 45,
+                      borderWidth: 1,
+                      borderColor: '#ccc',
+                      borderRadius: 5,
+                      marginBottom: 15,
+                      paddingHorizontal: 10,
+                      justifyContent: 'center',
+                      backgroundColor: '#fff',
+                    },
+                    errorsProfil.nik && {borderColor: 'red', color: 'red'},
+                  ]}
+                  keyboardType="numeric"
+                  autoCorrect={false}
+                  value={value}
+                />
+              </View>
+            )}
+          />
+          {errorsProfil.nik && (
+            <Text
+              style={{
+                color: 'red',
+                marginTop: -10,
+                marginBottom: 10,
+                width: '100%',
+              }}>
+              {errorsProfil.nik.message}
+            </Text>
+          )}
+
+          <Button
+            label="Simpan"
+            onPress={handleSubmitProfil(handleSaveProfil)}
+          />
+        </View>
+        <View style={styles.formGroup}>
+          <Text style={styles.title}>Edit Password</Text>
+        </View>
+        <View style={styles.formGroup}>
+          <Controller
+            control={controlPassword}
+            name="password"
+            render={({field: {onChange, onBlur, value}}) => (
+              <InputField
+                label="Password Baru"
+                placeholder="Masukan Password Baru"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                error={errorsPassword.password?.message}
+                secureTextEntry
+                required
+              />
+            )}
+          />
+
+          <Controller
+            control={controlPassword}
+            name="confirm_password"
+            render={({field: {onChange, onBlur, value}}) => (
+              <InputField
+                label="Konfirmasi Password"
+                placeholder="Masukan Konfirmasi Password"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                error={errorsPassword.confirm_password?.message}
+                secureTextEntry
+                required
+              />
+            )}
+          />
+
+          <Button
+            disabled={isLoading}
+            label="Simpan"
+            onPress={handleSubmitPassword(handleSavePassword)}
+          />
+        </View>
+      </RefreshableScrollView>
       <LoadingModal visible={isLoading} />
     </SafeAreaView>
   );

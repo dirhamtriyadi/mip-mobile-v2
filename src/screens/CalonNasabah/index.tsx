@@ -10,7 +10,8 @@ import globalStyles from '@src/styles/styles';
 import {RootStackParamList} from 'App';
 import {useCallback, useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
-import {Alert, SafeAreaView, ScrollView, View} from 'react-native';
+import {Alert, SafeAreaView, View} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import FormCalonNasabah from './form';
 
 function CalonNasabahScreen() {
@@ -126,7 +127,17 @@ function CalonNasabahScreen() {
 
   return (
     <SafeAreaView style={globalStyles.container}>
-      <ScrollView>
+      <KeyboardAwareScrollView
+        style={{flex: 1}}
+        // contentContainerStyle={{
+        //   paddingBottom: 120, // ✅ Extra space at bottom
+        // }}
+        keyboardShouldPersistTaps="handled"
+        enableOnAndroid={true} // ✅ Enable for Android
+        enableAutomaticScroll={true} // ✅ Auto scroll to focused input
+        // extraHeight={150} // ✅ Extra space above keyboard
+        // extraScrollHeight={150} // ✅ Extra scroll height
+        showsVerticalScrollIndicator={false}>
         <View style={globalStyles.formContainer}>
           <FormCalonNasabah
             control={control}
@@ -140,7 +151,7 @@ function CalonNasabahScreen() {
             watchedValues={watch()}
           />
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
       <LoadingModal visible={isLoading} />
     </SafeAreaView>
   );
