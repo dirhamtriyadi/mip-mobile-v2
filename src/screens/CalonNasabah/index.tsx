@@ -136,7 +136,7 @@ function CalonNasabahScreen() {
         enableOnAndroid={true} // ✅ Enable for Android
         enableAutomaticScroll={true} // ✅ Auto scroll to focused input
         // extraHeight={150} // ✅ Extra space above keyboard
-        // extraScrollHeight={150} // ✅ Extra scroll height
+        extraScrollHeight={150} // ✅ Extra scroll height
         showsVerticalScrollIndicator={false}>
         <View style={globalStyles.formContainer}>
           <FormCalonNasabah
@@ -151,8 +151,8 @@ function CalonNasabahScreen() {
             watchedValues={watch()}
           />
         </View>
+        <LoadingModal visible={isLoading} />
       </KeyboardAwareScrollView>
-      <LoadingModal visible={isLoading} />
     </SafeAreaView>
   );
 }
